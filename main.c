@@ -4,12 +4,6 @@
 
 int main()
 {
-long registro[12];
-
-
-
- visualizar(registro);
-
-
-
+	long registro[12];
+	visualizar(registro);
 }
