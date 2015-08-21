@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1439911282 source:c:\users\christian tovar\documents\codeblocks\lab_1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mostrar.h"
+
+1439910790 c:\users\christian tovar\documents\codeblocks\lab_1\mostrar.h
+
+1439911095 source:c:\users\christian tovar\documents\codeblocks\lab_1\mostrar.c
+	"mostrar.h"
+
+1440089809 source:c:\users\christian tovar\arm_cortex_m0\mostrar.c
+	"mostrar.h"
+
+1440089809 c:\users\christian tovar\arm_cortex_m0\mostrar.h
+
+1440122463 source:c:\users\christian tovar\arm_cortex_m0\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mostrar.h"
+	"instrucciones.h"
+
+1440196515 c:\users\christian tovar\arm_cortex_m0\instrucciones.h
+
+1440122355 source:c:\users\christian tovar\arm_cortex_m0\instrucciones.c
+	"instrucciones.h"
+
