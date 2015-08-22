@@ -1,8 +1,8 @@
 #include "mostrar.h"
 
-void visualizar(long arreglo[12])
+void visualizar(unsigned long int arreglo[12])
 {
-	int i=0;
+	int i=0; /** \param i variable contador */
 
 	for( i;i<12;i++)
 	{
@@ -12,5 +12,5 @@ void visualizar(long arreglo[12])
 			printf("\n");
 		}
 	}
-	/* for utilizado para organizar los registros */
+	/** for utilizado para organizar los registros */
 }

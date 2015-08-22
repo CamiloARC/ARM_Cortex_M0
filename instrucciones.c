@@ -1,41 +1,31 @@
 #include "instrucciones.h"
 
+void ADDS(unsigned long int *Rd,unsigned long int Rn,unsigned long int Rm)
+{
+     *Rd=Rn+Rm;
+}
 
-void ADDS(int *Rd,int Rn,int Rm){
+void AND(unsigned long int *Rd,unsigned long int Rm)
+{
+	*Rd&=Rm;
+};
 
-        *Rd=Rn+Rm;
+void EOR(unsigned long int *Rd,unsigned long int Rm)
+{
+	*Rd^=Rm;
+};
 
+void MOV(unsigned long int *Rd,unsigned long int Rm)
+{
+	*Rd=Rm;
+};
 
-        }
+void ORR(unsigned long int *Rd,unsigned long int Rm)
+{
+	*Rd|=Rm;
+};
 
-void AND(int *Rd,int Rm){
-
-
-        *Rd&=Rm;
-
-
-         };
-
-void EOR(int *Rd,int Rm){
-
-         *Rd^=Rm;
-
-        };
-
-void MOV(int *Rd,int Rm){
-
-        *Rd=Rm;
-
-        };
-
-void ORR(int *Rd,int Rm){
-
-        *Rd|=Rm;
-
-        };
-
-void SUB(int *Rd,int Rn,int Rm){
-
-         *Rd=Rn-Rm;
-
-        };
+void SUB(unsigned long int *Rd,unsigned long int Rn,unsigned long int Rm)
+{
+	*Rd=Rn-Rm;
+};

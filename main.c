@@ -5,12 +5,9 @@
 
 int main()
 {
-	long registro[12];
+	unsigned long int registro[12];
 	visualizar(registro);
 
-
-
-ADDS(&registro[0],registro[1],3);
-
-printf("\n%0.08X\n",registro[0]);
+	ADDS(&registro[0],registro[1],3);
+	printf("\n%0.08X\n",registro[0]);
 }
