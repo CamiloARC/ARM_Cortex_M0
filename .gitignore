@@ -5,4 +5,5 @@ doc/*
 *.depend
 *.layout
 *ffg
+*.txt
 *.o
