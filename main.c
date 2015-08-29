@@ -3,11 +3,18 @@
 #include "mostrar.h"
 #include "instrucciones.h"
 
+
 int main()
 {
-	unsigned long int registro[12];
+
+    flags_t bandera;
+
+	unsigned long registro[12];
 	visualizar(registro);
 
-	ADDS(&registro[0],registro[1],3);
-	printf("\n%0.08X\n",registro[0]);
+	ADDS(&registro[0],(1<<31)-1,0,&bandera);
+	printf("\nC>>%d\n \nN>>%d\n \nZ>>%d\n \nV>>%d\n \nRd>>%d\n",bandera.C,bandera.N,bandera.Z,bandera.V,registro[0]);
+
+
+
 }

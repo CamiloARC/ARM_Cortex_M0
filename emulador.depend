@@ -25,3 +25,19 @@
 1440122355 source:c:\users\christian tovar\arm_cortex_m0\instrucciones.c
 	"instrucciones.h"
 
+1440805709 source:c:\users\christian tovar\git_clone\arm_cortex_m0\instrucciones.c
+	"instrucciones.h"
+
+1440805709 c:\users\christian tovar\git_clone\arm_cortex_m0\instrucciones.h
+
+1440513155 source:c:\users\christian tovar\git_clone\arm_cortex_m0\mostrar.c
+	"mostrar.h"
+
+1440513155 c:\users\christian tovar\git_clone\arm_cortex_m0\mostrar.h
+
+1440800376 source:c:\users\christian tovar\git_clone\arm_cortex_m0\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mostrar.h"
+	"instrucciones.h"
+
