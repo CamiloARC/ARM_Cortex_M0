@@ -3,12 +3,55 @@
 
 #define HALF ((1<<31)-1) // variable half igual a 2^32-1
 
+<<<<<<< HEAD
 char i=0;
 
 
 void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
      *Rd=Rn+Rm;
+=======
+void ADDS(unsigned long *Rd,unsigned long Rn,unsigned long Rm,flags_t *bandera)
+{
+     *Rd=Rn+Rm;
+	 
+	if(((Rn&HALF)==1) && ((Rm&HALF)==1) && ((*Rd&HALF)==0))   //  se utiliza AND binario (&) y  AND lÃ³gico(&&)
+	{
+		bandera->C=1; // La bandera carry es 1
+	}
+	else
+	{
+		bandera->C=0; 
+	}
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;	
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+	if((Rn&HALF) == (Rm&HALF))  
+	{
+		if((Rn&HALF) != (*Rd&HALF))
+		{
+			bandera->V=1; // bandera de sobreflujo igual a 1
+		}
+	}
+	else	
+	{
+		bandera->V=0;
+	}
+}
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 
 	if(((Rn&HALF)==1) && ((Rm&HALF)==1) && ((*Rd&HALF)==0))   //  se utiliza AND binario (&) y  AND lógico(&&)
 	{
@@ -50,12 +93,21 @@ void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 {
 	*Rd&=Rm;
+<<<<<<< HEAD
 
 	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0))
 	{
 		bandera->C=1;
 	}
 	else
+=======
+	
+	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0)) 
+	{
+		bandera->C=1;
+	}
+	else	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->C=0;
 	}
@@ -79,12 +131,17 @@ void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->V=1;
 	}
+<<<<<<< HEAD
 	else
+=======
+	else	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->V=0;
 	}
 }
 
+<<<<<<< HEAD
 void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 {
 	*Rd^=Rm;
@@ -94,6 +151,17 @@ void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 		bandera->C=1;
 	}
 	else
+=======
+void EOR(unsigned long *Rd,unsigned long Rm,flags_t *bandera)
+{
+	*Rd^=Rm;
+	
+	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0)) 
+	{
+		bandera->C=1;
+	}
+	else		
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->C=0;
 	}
@@ -113,7 +181,11 @@ void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->Z=0;
 	}
+<<<<<<< HEAD
 	if(((*Rd&1<<31-1) == (Rm&1<<31-1)) != (*Rd&1<<31-1))
+=======
+	if(((*Rd&1<<31-1) == (Rm&1<<31-1)) != (*Rd&1<<31-1))	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->V=1;
 	}
@@ -123,11 +195,19 @@ void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	}
 }
 
+<<<<<<< HEAD
 void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 {
 	*Rd=Rm;
 
 	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0))
+=======
+void MOV(unsigned long *Rd,unsigned long Rm,flags_t *bandera)
+{
+	*Rd=Rm;
+	
+	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0)) 
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->C=1;
 	}
@@ -143,7 +223,11 @@ void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->N=0;
 	}
+<<<<<<< HEAD
 	if(*Rd==0)
+=======
+	if(*Rd==0)	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->Z=1;
 	}
@@ -151,16 +235,25 @@ void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->Z=0;
 	}
+<<<<<<< HEAD
 	if(((*Rd&1<<31-1) == (Rm&1<<31-1)) != (*Rd&1<<31-1))
 	{
 		bandera->V=1;
 	}
 	else
+=======
+	if(((*Rd&1<<31-1) == (Rm&1<<31-1)) != (*Rd&1<<31-1))	
+	{
+		bandera->V=1;
+	}
+	else	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->V=0;
 	}
 }
 
+<<<<<<< HEAD
 void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 {
 	*Rd|=Rm;
@@ -169,6 +262,16 @@ void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 		bandera->C=1;
 	}
 	else
+=======
+void ORR(unsigned long *Rd,unsigned long Rm,flags_t *bandera)
+{
+	*Rd|=Rm;
+	if((*Rd&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0)) 
+	{
+		bandera->C=1;
+	}
+	else	
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->C=0;
 	}
@@ -184,7 +287,11 @@ void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->Z=1;
 	}
+<<<<<<< HEAD
 	else
+=======
+	else 
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
 	{
 		bandera->Z=0;
 	}
@@ -196,6 +303,7 @@ void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	{
 		bandera->V=0;
 	}
+<<<<<<< HEAD
 }
 
 void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
@@ -365,3 +473,44 @@ LSL(uint32_t *Rdn,uint32_t Rm)
     }
     bin2reg(Rdn,&BitRdn);
 }
+=======
+}
+
+void SUB(unsigned long *Rd,unsigned long Rn,unsigned long Rm,flags_t *bandera)
+{
+	*Rd=Rn-Rm;
+	if( (Rn&(1<<31-1)==1) && (Rm&(1<<31-1)==1) && (*Rd&(1<<31-1)==0)) 
+	{
+		bandera->C=1;
+	}
+	else	
+	{
+		bandera->C=0;
+	}
+	if((*Rd&(1<<31)) == (1<<31))
+	{
+		bandera->N=1;
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0)
+	{
+		bandera->Z=1;
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+	if(((Rn&1<<31-1) == (Rm&1<<31-1)) != (*Rd&1<<31-1))
+	{
+		bandera->V=1;
+	}
+	else
+	{
+		bandera->V=0;
+	}
+}
+
+>>>>>>> e378bbe0565c95e0f851c24e89b1a41d9ab457d7
