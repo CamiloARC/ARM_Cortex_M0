@@ -1,6 +1,6 @@
 #ifndef INSTRUCCIONES_H_INCLUDED
 #define INSTRUCCIONES_H_INCLUDED
-
+#include <stdint.h>
 
 typedef struct  flags{
 
@@ -8,6 +8,7 @@ typedef struct  flags{
   char Z;
   char C;
   char V;
+
 }flags_t;
 
 
@@ -18,7 +19,7 @@ typedef struct  flags{
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void ADDS(unsigned long *Rd,unsigned long Rn,unsigned long Rm,flags_t *bandera);
+void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operacion AND
@@ -26,7 +27,7 @@ void ADDS(unsigned long *Rd,unsigned long Rn,unsigned long Rm,flags_t *bandera);
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void AND(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
+void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operación XOR
@@ -34,7 +35,7 @@ void AND(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void EOR(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
+void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza una copia de Rm
@@ -42,7 +43,7 @@ void EOR(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void MOV(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
+void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operación OR
@@ -50,7 +51,7 @@ void MOV(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void ORR(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
+void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza la resta entre Rn y Rm
@@ -59,7 +60,32 @@ void ORR(unsigned long *Rd,unsigned long Rm,flags_t *bandera);
 * \param Rm registro m o número
 * \return La función no tiene retorno
 */
-void SUB(unsigned long *Rd,unsigned long Rn,unsigned long Rm,flags_t *bandera);
+void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void REVSH(uint32_t *Rd,uint32_t Rm);
+
+void REV16(uint32_t *Rd,uint32_t Rm);
+
+void REV(uint32_t *Rd,uint32_t Rm);
+
+void NOP();
+
+void RSBS(uint32_t *Rd,uint32_t Rn);
+
+void MVNS(uint32_t *Rd,uint32_t Rm);
+
+void BIC(uint32_t *Rdn,uint32_t Rm);
+
+void ASRS(uint32_t *Rd,uint32_t Rm);
+
+void ROR(uint32_t *Rdn,uint32_t Rm);
+
+void LSR(uint32_t *Rdn,uint32_t Rm);
+
+void LSL(uint32_t *Rdn,uint32_t Rm);
+
 
 
 #endif // INSTRUCCIONES_H_INCLUDED
