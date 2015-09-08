@@ -1,9 +1,6 @@
 bin/*
 obj/*
 doc/*
-*.cbp
 *.depend
 *.layout
-*ffg
-*.txt
-*.o
+*.c

@@ -1,8 +1,17 @@
-#ifndef CONVERSION_H_INCLUDED
-#define CONVERSION_H_INCLUDED
+#include <stdint.h>
 
-void dec2bin(unsigned long R, unsigned long *Bit);
+/**
+ * \brief La función cumple el deber de convertir un decimal a binario, en donde cada elemento del arreglo bit corresponde a un bit de R
+ * \param R Registro a convertir
+ * \param Bit puntero a un arreglo que posee 32 elementos
+ * \return La función no retorna nada
+ */
+void dec2bin(uint32_t R, uint32_t *Bit);
 
-void bin2reg(unsigned long *R, unsigned long *Bit);
-
-#endif // CONVERSION_H_INCLUDED
+/**
+ * \brief La función cumple el deber de convertir un binario a decimal, en donde cada elemento del arreglo bit corresponde a un bit de R
+ * \param R puntero al registro a guardar la conversión
+ * \param Bit puntero a un arreglo que posee 32 elementos
+ * \return La función no retorna nada
+ */
+void bin2reg(uint32_t *R, uint32_t *Bit);
