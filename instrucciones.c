@@ -6,6 +6,7 @@ int i=0, j=0; //variables utilizadas como contadores
 void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
      *Rd=Rn+Rm;
+     flags(*Rd,Rn,Rm,bandera);
 }
 
 void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
@@ -206,5 +207,11 @@ void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 		bandera->V=0;
 	}
 }
+
+void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm)
+{
+    *Rdm=(uint32_t)(Rn*Rm);
+}
+
 
 

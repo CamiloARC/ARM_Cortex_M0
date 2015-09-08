@@ -153,10 +153,19 @@ void LSL(uint32_t *Rdn,uint32_t Rm);
 
 /**
  * \brief Función banderas
- * \param Rd
- * \param Rn
- * \param Rm
+ * \param Rd registro donde se guarda el resultado
+ * \param Rn registro o número que se opera con Rm
+ * \param Rm registro o número que se opera con Rn
  * \param bandera puntero de la estructutura flags_t bandera
  * \return La función no tiene retorno
  */
 void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+/**
+ * \brief Función que multiplica dos registros y almacena los 32 bits menos significativos en Rdm
+ * \param Rdm registro donde se guarda el resultado
+ * \param Rn registro o número
+ * \param Rm registro o número
+ * \return La función no tiene retorno
+ */
+void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm);
