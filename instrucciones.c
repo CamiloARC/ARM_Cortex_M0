@@ -3,6 +3,7 @@
 #define HALF ((1<<31)-1) // variable half igual a 2^32-1
 
 int i=0, j=0; //variables utilizadas como contadores
+
 void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
      *Rd=Rn+Rm;
@@ -213,5 +214,26 @@ void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm)
     *Rdm=(uint32_t)(Rn*Rm);
 }
 
+void CMN(uint32_t Rn,uint32_t Rm,flags_t *bandera){
+
+     Rn+=Rm;
+     flags(Rn,Rn,Rm,bandera);
+
+}
+
+
+void CMP(uint32_t Rn,uint32_t Rm,flags_t *bandera){
+
+     Rn-=Rm;
+     flags(Rn,Rn,Rm,bandera);
+
+}
+
+void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera){
+
+     Rn&=Rm;
+     flags(Rn,Rn,Rm,bandera);
+
+}
 
 
