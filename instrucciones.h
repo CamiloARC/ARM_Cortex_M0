@@ -169,3 +169,9 @@ void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
  * \return La función no tiene retorno
  */
 void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm);
+
+void CMN(uint32_t Rd,uint32_t Rm,flags_t *bandera);
+
+void CMP(uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera);
