@@ -1,3 +1,7 @@
+#ifndef INSTRUCCIONES_H_
+#define INSTRUCCIONES_H_
+
+
 #include <stdint.h>
 
 typedef struct flags // estrutura flags_t
@@ -17,7 +21,7 @@ typedef struct flags // estrutura flags_t
 * \param bandera puntero a la estructura bandera de entrada
 * \return La función no tiene retorno
 */
-void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+void ADDS( uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operacion AND
@@ -26,7 +30,7 @@ void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estructura bandera de entrada
 * \return La función no tiene retorno
 */
-void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
+void ANDS(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operación XOR
@@ -35,7 +39,7 @@ void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estrutura bandera de entrada
 * \return La función no tiene retorno
 */
-void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
+void EORS(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza una copia de Rm
@@ -44,7 +48,7 @@ void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estructura bandera de entrada
 * \return La función no tiene retorno
 */
-void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
+void MOVS(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza operación OR
@@ -53,7 +57,7 @@ void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estructura bandera de entrada
 * \return La función no tiene retorno
 */
-void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
+void ORRS(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 
 /**
 * \brief Función que realiza la resta entre Rn y Rm
@@ -63,7 +67,7 @@ void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estructura bandera de entrada
 * \return La función no tiene retorno
 */
-void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+void SUBS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
 /**
  * \brief Función que realiza extension de signo y cambia el orden de los Bytes del halfword bajo
@@ -159,15 +163,7 @@ void LSL(uint32_t *Rdn,uint32_t Rm);
  * \param bandera puntero de la estructutura flags_t bandera
  * \return La función no tiene retorno
  */
-void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
-/**
- * \brief Función que multiplica dos registros y almacena los 32 bits menos significativos en Rdm
- * \param Rdm registro donde se guarda el resultado
- * \param Rn registro o número
- * \param Rm registro o número
- * \return La función no tiene retorno
- */
 void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm);
 
 void CMN(uint32_t Rd,uint32_t Rm,flags_t *bandera);
@@ -175,3 +171,39 @@ void CMN(uint32_t Rd,uint32_t Rm,flags_t *bandera);
 void CMP(uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
 void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void ADC(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void SBC(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void ADDS( uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+void AND(uint32_t *Rd,uint32_t Rm);
+
+void BICS(uint32_t *Rdn,uint32_t Rm,flags_t *bander);
+
+void EOR(uint32_t *Rd,uint32_t Rm);
+
+void MOV(uint32_t *Rd,uint32_t Rm);
+
+void ORR(uint32_t *Rd,uint32_t Rm);
+
+void RSBS(uint32_t *Rd,uint32_t Rn,flags_t *bandera);
+
+void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif

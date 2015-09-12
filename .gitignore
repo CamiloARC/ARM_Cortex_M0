@@ -1,6 +1,0 @@
-bin/*
-obj/*
-doc/*
-*.depend
-*.layout
-*.c

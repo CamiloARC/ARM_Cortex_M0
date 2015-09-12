@@ -6,7 +6,7 @@
  * \param Bit puntero a un arreglo que posee 32 elementos
  * \return La función no retorna nada
  */
-void dec2bin(uint32_t R, uint32_t *Bit);
+void reg2bin(uint32_t R, uint32_t *Bit);
 
 /**
  * \brief La función cumple el deber de convertir un binario a decimal, en donde cada elemento del arreglo bit corresponde a un bit de R
@@ -15,3 +15,4 @@ void dec2bin(uint32_t R, uint32_t *Bit);
  * \return La función no retorna nada
  */
 void bin2reg(uint32_t *R, uint32_t *Bit);
+

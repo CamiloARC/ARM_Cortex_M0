@@ -1,45 +1,141 @@
 #include <stdint.h>
 #include "instrucciones.h"
-#define HALF ((1<<31)-1) // variable half igual a 2^32-1
+#include "banderas.h"
+#include "conversion.h"
+
 
 int i=0, j=0; //variables utilizadas como contadores
+
+void ADD(uint32_t *Rd,uint32_t Rn,uint32_t Rm)
+{
+     *Rd=Rn+Rm;
+}
 
 void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
      *Rd=Rn+Rm;
-     flags(*Rd,Rn,Rm,bandera);
+     flags_aritmetica(*Rd,Rn,Rm,bandera);
 }
 
-void AND(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+void AND(uint32_t *Rd,uint32_t Rm)
 {
 	*Rd&=Rm;
 }
 
-void EOR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+void ANDS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+	*Rd&=Rm;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+
+void EOR(uint32_t *Rd,uint32_t Rm)
 {
 	*Rd^=Rm;
 }
 
-void MOV(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+void EORS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+	*Rd^=Rm;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+void MOV(uint32_t *Rd,uint32_t Rm)
 {
 	*Rd=Rm;
 }
 
-void ORR(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+void MOVS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+	*Rd=Rm;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+
+void ORR(uint32_t *Rd,uint32_t Rm)
 {
 	*Rd|=Rm;
 }
 
-void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+void ORRS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+	*Rd|=Rm;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+
+void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm)
 {
 	*Rd=Rn-Rm;
+}
+
+void SUBS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+	*Rd=Rn-Rm;
+    flags_aritmetica(Rd,Rn,Rm,bandera);
 }
 
 void REVSH(uint32_t *Rd,uint32_t Rm)
 {
     uint32_t BitRd[32],BitRm[32];
-    reg2bin(*Rd,&BitRd);
-    reg2bin(Rm,&BitRm);
+    reg2bin(*Rd,&BitRd[0]);
+    reg2bin(Rm,&BitRm[0]);
 
     for(i=0;i<8;i++)
     {
@@ -49,28 +145,27 @@ void REVSH(uint32_t *Rd,uint32_t Rm)
 	{
         BitRd[i]=BitRm[7];
     }
-    bin2reg(Rd,&BitRd);
+    bin2reg(Rd,&BitRd[0]);
 }
 
 void REV16(uint32_t *Rd,uint32_t Rm)
 {
     uint32_t BitRd[32],BitRm[32];
-    reg2bin(*Rd,&BitRd);
-    reg2bin(Rm,&BitRm);
-
+    reg2bin(*Rd,&BitRd[0]);
+    reg2bin(Rm,&BitRm[0]);
     for(i=0;i<16;i++)
     {
         BitRd[31-i]=BitRm[15-i];
         BitRd[15-i]=BitRm[31-i];
     }
-    bin2reg(Rd,&BitRd);
+    bin2reg(Rd,&BitRd[0]);
 }
 
 void REV(uint32_t *Rd,uint32_t Rm)
 {
     uint32_t BitRd[32],BitRm[32];
-    reg2bin(*Rd,&BitRd);
-    reg2bin(Rm,&BitRm);
+    reg2bin(*Rd,&BitRd[0]);
+    reg2bin(Rm,&BitRm[0]);
 
     for(i=0;i<8;i++)
     {
@@ -79,7 +174,7 @@ void REV(uint32_t *Rd,uint32_t Rm)
         BitRd[15-i]=BitRm[23-i];
         BitRd[7-i]=BitRm[31-i];
     }
-    bin2reg(Rd,&BitRd);
+    bin2reg(Rd,&BitRd[0]);
 }
 
 void NOP()
@@ -92,9 +187,51 @@ void RSB(uint32_t *Rd,uint32_t Rn)
     *Rd=~Rn+1;
 }
 
+void RSBS(uint32_t *Rd,uint32_t Rn,flags_t *bandera)
+{
+    *Rd=~Rn+1;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+
 void MVN(uint32_t *Rd,uint32_t Rm)
 {
     *Rd=~Rm;
+}
+
+void MVNS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+    *Rd=~Rm;
+	if(*Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rd==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
 }
 
 void BIC(uint32_t *Rdn,uint32_t Rm)
@@ -102,83 +239,86 @@ void BIC(uint32_t *Rdn,uint32_t Rm)
     *Rdn&=~Rm;
 }
 
+void BICS(uint32_t *Rdn,uint32_t Rm,flags_t *bandera)
+{
+    *Rdn&=~Rm;
+	if(*Rdn>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rdn==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
+}
+
 void ASR(uint32_t *Rd,uint32_t Rm)
 {
-    uint32_t BitRd[32],aux;
-    reg2bin(*Rd,&BitRd);
-    aux=BitRd[31];
+    uint32_t aux;
+    aux=*Rd&(1<<31);
+    *Rd=*Rd>>Rm;
+    *Rd=*Rd|aux;
+}
 
-    for(j=0;j<Rm;j++)
-    {
-    for(i=0;i<31;i++)
-    {
-        BitRd[i]=BitRd[i+1];
-    }
-    BitRd[31]=0;
-    }
-    BitRd[31]=aux;
-    bin2reg(Rd,&BitRd);
+void ASRS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
+{
+    uint32_t aux;
+    aux=*Rd&(1<<31);
+    *Rd=*Rd>>Rm;
+    *Rd=*Rd|aux;
 }
 
 void ROR(uint32_t *Rdn,uint32_t Rm)
 {
-    uint32_t BitRdn[32],aux;
-    reg2bin(*Rdn,&BitRdn);
-
-    for(j=0;j<Rm;j++)
-    {
-    aux=BitRdn[0];
-    for(i=0;i<31;i++)
-    {
-        BitRdn[i]=BitRdn[i+1];
-    }
-    BitRdn[31]=aux;
-    }
-    bin2reg(Rdn,&BitRdn);
+    uint32_t aux1,aux2;
+    aux1=*Rdn>>Rm;
+    aux2=*Rdn<<(32-Rm);
+    *Rdn=aux1|aux2;
 }
 
 void LSR(uint32_t *Rdn,uint32_t Rm)
 {
-    uint32_t BitRdn[32];
-    reg2bin(*Rdn,&BitRdn);
-    for(j=0;j<Rm;j++)
-    {
-    for(i=0;i<31;i++)
-    {
-        BitRdn[i]=BitRdn[i+1];
-    }
-    BitRdn[31]=0;
-    }
-    bin2reg(Rdn,&BitRdn);
+    *Rdn=*Rdn>>Rm;
+}
+
+void LSRS(uint32_t *Rdn,uint32_t Rm,flags_t *bandera)
+{
+    *Rdn=*Rdn>>Rm;
+	if(*Rdn>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+	{
+	    bandera->N=1; // la bandera de negativo es 1
+	}
+	else
+	{
+		bandera->N=0;
+	}
+	if(*Rdn==0) // se cumple cuando el resultado es 0
+	{
+		bandera->Z=1; // la bandera de cero es 1
+	}
+	else
+	{
+		bandera->Z=0;
+	}
 }
 
 void LSL(uint32_t *Rdn,uint32_t Rm)
 {
-    uint32_t BitRdn[32];
-    reg2bin(*Rdn,&BitRdn);
-    for(j=0;j<Rm;j++)
-    {
-    for(i=0;i<31;i++)
-    {
-        BitRdn[31-i]=BitRdn[30-i];
-    }
-    BitRdn[0]=0;
-    }
-    bin2reg(Rdn,&BitRdn);
+    *Rdn=*Rdn<<Rm;
 }
 
-void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+void LSLS(uint32_t *Rdn,uint32_t Rm,flags_t *bandera)
 {
-	if(((Rn&HALF)==1) && ((Rm&HALF)==1) && ((Rd&HALF)==0))   //  se utiliza AND binario (&) y  AND lógico(&&)
-	{
-		bandera->C=1; // La bandera carry es 1
-	}
-	else
-	{
-		bandera->C=0;
-	}
-
-	if(Rd>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
+    *Rdn=*Rdn<<Rm;
+	if(*Rdn>(1<<31))	 // se cumple cuando el resultado es mayor a 2^32
 	{
 	    bandera->N=1; // la bandera de negativo es 1
 	}
@@ -187,25 +327,13 @@ void flags(uint32_t Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 		bandera->N=0;
 	}
 
-	if(Rd==0) // se cumple cuando el resultado es 0
+	if(*Rdn==0) // se cumple cuando el resultado es 0
 	{
 		bandera->Z=1; // la bandera de cero es 1
 	}
 	else
 	{
 		bandera->Z=0;
-	}
-
-	if((Rn&HALF) == (Rm&HALF))
-	{
-		if((Rn&HALF) != (Rd&HALF))
-		{
-			bandera->V=1; // bandera de sobreflujo igual a 1
-		}
-	}
-	else
-	{
-		bandera->V=0;
 	}
 }
 
@@ -214,26 +342,35 @@ void MUL(uint32_t *Rdm,uint32_t Rn,uint32_t Rm)
     *Rdm=(uint32_t)(Rn*Rm);
 }
 
-void CMN(uint32_t Rn,uint32_t Rm,flags_t *bandera){
-
+void CMN(uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
      Rn+=Rm;
-     flags(Rn,Rn,Rm,bandera);
-
 }
 
-
-void CMP(uint32_t Rn,uint32_t Rm,flags_t *bandera){
-
-     Rn-=Rm;
-     flags(Rn,Rn,Rm,bandera);
-
+void CMP(uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+    Rn-=Rm;
+    flags_aritmetica(Rn,Rn,Rm,bandera);
 }
 
-void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera){
+void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+    Rn&=Rm;
+    flags_aritmetica(Rn,Rn,Rm,bandera);
+}
 
-     Rn&=Rm;
-     flags(Rn,Rn,Rm,bandera);
+void ADC(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+     *Rd=Rn+Rm;
+     flags_aritmetica(Rd,Rn,Rm,bandera);
+     *Rd+=bandera->C;
+}
 
+void SBC(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+    *Rd=Rn-Rm;
+    flags_aritmetica(Rd,Rn,Rm,bandera);
+    *Rd+=bandera->C;
 }
 
 
