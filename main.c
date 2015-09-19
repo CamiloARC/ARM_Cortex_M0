@@ -9,14 +9,14 @@
 
 /** \mainpage Emulador del procesador ARM Cortex -M0
  *  Esta es la documentacion para un sofware que simula el procesador ARM Cortex -M0 el cual es el procesador ARM
- *  mas pequeno disponible con un rendimiento de 32 bits.  Este sofware codificado en lenguaje c, con ayuda del compilador
+ *  mas pequeno disponible con un rendimiento de 32 bits.  Este sofware codificado en lenguaje C, con ayuda del compilador
  *  codeblocks para su desarrollo y la libreria curses.h para la presentacion de su interfaz se basa en leer las instrucciones
- *  del archivo code.txt las cuales estan en lenguaje maquina y convertir esas instrucciones en un lenguaje de medio nivel como
- *  lo es el lenguaje c. En este se tradujeron 24 instrucciones maquina a c, con sus respectivas modificaciones de las banderas y
+ *  del archivo code.txt, que se encuentran en lenguaje de maquina y convertir estas instrucciones en un lenguaje de medio nivel como
+ *  lo es el lenguaje C. En este se tradujeron 24 instrucciones de lenguaje de maquina a lenguaje C, con las respectivas modificaciones de banderas;
  *  tambien se llevo a cabo la traduccion de las funciones de salto.\n
- *  Para el desarrollo del sofware se implementaron 15 registro de 32 bits sin signo, los cuales 12 de ellos
- *  son utilizados para almacenamiento, uno para el program counter(PC), otro para LR, ademas se implemento una estructura para
- *  el manejo de banderas, que tiene 4 tipos, bandera de negativo, bandera de cero, bandera de acarreo y bandera de sobreflujo.
+ *  Para el desarrollo del sofware se implementaron 15 registros cada uno de 32 bits sin signo, 12 de ellos
+ *  son utilizados para almacenamiento, uno para el program counter(PC) y otro para link register(LR), ademas se implemento una estructura para
+ *  el manejo de las banderas de negativo, de cero, de acarreo y bandera de sobreflujo.
  */
 
 /** \file main.c
