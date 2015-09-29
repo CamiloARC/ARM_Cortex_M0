@@ -5,10 +5,14 @@
  *  \brief Documento en el cual se realiza el proceso de extraer las instrucciones del code.txt, segmentarlas y comparar el mnemonic con el nombre de cada instruccion, asi realizar la instruccion deseada
 */
 
-void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera)
+void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *SRAM)
 {
 	//	comparar el mnemonic con el nombre de cada una de las funciones, y asi ejecutar la adecuada
-
+    if( strcmp(instruction.mnemonic,"PUSH") ==0)
+    {
+        push(registro,SRAM,&instruction.registers_list[0]);
+        registro[15]++;
+    }
 	if( strcmp(instruction.mnemonic,"ADDS") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))	//	si se tienen como parametros 2 registros
@@ -19,7 +23,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         {
             ADDS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera); // envio como parametros la direccion de
         }
-        registro[14]++;
+        registro[15]++;
 	}
 	// los parametros de las demas funciones aritmeticas, de desplazamiento y logicas son similares
     if( strcmp(instruction.mnemonic,"ANDS") ==0)
@@ -32,7 +36,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			ANDS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"EORS") ==0)
     {
@@ -44,7 +48,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			EORS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"MOV") ==0)
     {
@@ -56,7 +60,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			MOV(registro+instruction.op1_value,instruction.op2_value);	// Envio como parametro una direccion y un valor
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"MOVS") ==0)
     {
@@ -68,7 +72,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			MOVS(registro+instruction.op1_value,instruction.op2_value, bandera);
 		}
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"ORRS") ==0)
     {
@@ -80,7 +84,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			ORRS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"SUBS") ==0)
     {
@@ -92,7 +96,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			SUBS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"RSBS") ==0)
     {
@@ -104,7 +108,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			RSBS(registro+instruction.op1_value,instruction.op2_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"MVNS") ==0)
     {
@@ -116,7 +120,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			RSBS(registro+instruction.op1_value,instruction.op2_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"BICS") ==0)
     {
@@ -128,7 +132,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			BICS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"ASRS") ==0)
     {
@@ -140,7 +144,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			ASRS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"RORS") ==0)
     {
@@ -152,7 +156,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			RORS(registro+instruction.op1_value,instruction.op2_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"LSRS") ==0)
     {
@@ -164,7 +168,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			LSRS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"LSLS") ==0)
     {
@@ -176,7 +180,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			LSLS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
 	if( strcmp(instruction.mnemonic,"MUL") ==0)
     {
@@ -188,7 +192,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			MUL(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"CMN") ==0)
     {
@@ -200,7 +204,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			CMN(*(registro+instruction.op1_value),instruction.op2_value, bandera);	// Como parametros se tienen el contenido de un registro y un valor
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"CMP") ==0)
     {
@@ -212,7 +216,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			CMP(*(registro+instruction.op1_value),instruction.op2_value, bandera);	// Como parametros se tienen el contenido de un registro y un valor
         }
-        registro[14]++;
+        registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"ADCS") ==0)
     {
@@ -224,7 +228,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			ADCS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"SBCS") ==0)
     {
@@ -236,7 +240,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			SBCS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
         }
-        registro[14]++;
+        registro[15]++;
 	}
     if( strcmp(instruction.mnemonic,"TST") ==0)
     {
@@ -248,7 +252,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 		{
 			TST(*(registro+instruction.op1_value),instruction.op2_value, bandera);	// Como parametros se tienen el contenido de un registro y un valor
         }
-        registro[14]++;
+        registro[15]++;
     }
 	// Las siguientes funciones, son funciones de saltos
     if( strcmp(instruction.mnemonic,"B") ==0)
@@ -267,7 +271,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if(instruction.op1_type=='L')	//	Sucede cuando
         {
-            BX(registro,registro[13]);  //  PC=LR
+            BX(registro,registro[14]);  //  PC=LR
         }
         if(instruction.op1_type=='R')	// Sucede cuando se tiene como parametro un registro diferente a LR
         {
@@ -339,65 +343,93 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
 
 instruction_t getInstruction(char* instStr)
 {
-	instruction_t instruction;
-	char* split = (char*)malloc( strlen(instStr)+1);
+	instruction_t instruction=
+	{
+		.registers_list = {0},
+		.op3_type  = 'N',
+		.op3_value = 0
+	};
+	char* split = (char*)malloc(strlen(instStr)+1);
 	int num=0;
 
-	strcpy( split, instStr);
-	// Obtiene el mnemonico de la instrucción
-	split = strtok( split, " ,");
+	strcpy(split, instStr);
+	/* Obtiene el mnemonico de la instrucción */
+	split = strtok(split, " ,");
 	strcpy(instruction.mnemonic, split);
 
-	// Separa los operandos
-	while ( split != NULL)
+	/* Separa los operandos */
+	while (split != NULL)
 	{
 		switch(num){
 			case 1:
-				instruction.op1_type  = split[0];
-				instruction.op1_value = (uint32_t)strtoll( split+1, NULL, 0);
+				if(split[0] == '{'){
+					instruction.op1_type  = split[0];
+					split++;
+					do{
+						if(split[0]=='L')
+							instruction.registers_list[14] = 1;
+						else if(split[0]=='P')
+							instruction.registers_list[15] = 1;
+						else
+							instruction.registers_list[(uint8_t)strtoll(split+1, NULL, 0)] = 1;
+
+						split = strtok(NULL, ",");
+					}while(split != NULL);
+				}else{
+					instruction.op1_type  = split[0];
+					instruction.op1_value = (uint32_t)strtoll(split+1, NULL, 0);
+				}
 				break;
 
 			case 2:
 				instruction.op2_type  = split[0];
-				instruction.op2_value = (uint32_t)strtoll( split+1, NULL, 0);
+				instruction.op2_value = (uint32_t)strtoll(split+1, NULL, 0);
 				break;
 
 			case 3:
 				instruction.op3_type  = split[0];
-				instruction.op3_value = (uint32_t)strtoll( split+1, NULL, 0);
+				instruction.op3_value = (uint32_t)strtoll(split+1, NULL, 0);
 				break;
 		}
-		split = strtok(NULL, " ,.");
-		num++;
+		if(split != NULL){
+			split = strtok(NULL, " ,.");
+			num++;
+		}
 	}
-	if(num==3){
-		instruction.op3_type  = 'N';
-		instruction.op3_value = 0;
+
+	if(instruction.op1_type == 'L'){
+		instruction.op1_value = 14;
+		instruction.op1_type = 'R';
 	}
-	free( split);
+
+	if(instruction.op1_type == '{'){
+		instruction.op1_type = 'P';
+	}
+	free(split);
 	return instruction;
 }
 
 int readFile(char* filename, ins_t* instructions)
 {
-	FILE* fp;	// Puntero a un archivo
-	int lines;	// Cantidad de líneas del archivo
-	int line=0;	// Línea leida
-	char buffer[50]; // Almacena la cadena leida
+	FILE* fp;	/* Puntero a un archivo  */
+	int lines;	/* Cantidad de líneas del archivo */
+	int line=0;	/* Línea leida */
+	char buffer[50]; /* Almacena la cadena leida */
 
-	fp = fopen(filename, "r");	// Abrir el archivo como solo lectura
+	fp = fopen(filename, "r");	/* Abrir el archivo como solo lectura */
 	if( fp==NULL )
-		return -1;	// Error al abrir el archivo
+		return -1;	/* Error al abrir el archivo */
 
-	lines = countLines(fp);	// Cantidad de líneas
-	// Asignación dinámica de memoria para cada instrucción
+	lines = countLines(fp);	/* Cantidad de líneas*/
+
+	/* Asignación dinámica de memoria para cada instrucción */
 	instructions->array = (char**)malloc(lines*sizeof(char*));
 	while ( fgets(buffer, 50, fp) != NULL && line<lines ){
-        instructions->array[line] = (char*)malloc(( strlen(buffer)+1)*sizeof(char));
+        instructions->array[line] = (char*)malloc((strlen(buffer)+1)*sizeof(char));
 		strcpy(instructions->array[line], buffer);
 		line++;
  	}
-	fclose(fp);	// Cierra el archivo
+	fclose(fp);	/* Cierra el archivo */
 	return lines;
 }
 

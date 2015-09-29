@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+
 #include "instrucciones.h"
 #include "instrucciones_saltos.h"
+#include "ram.h"
 
 /** \file decoder.h
  *  \brief Documento en donde esta definida la estructura ins_t y la estructura instruction_t y ademas se definen las instrucciones de manejo del code.txt
@@ -33,13 +35,14 @@ typedef struct
 	uint32_t op1_value; /*!< Contiene el numero del registro a operar del primer parametro*/
     uint32_t op2_value; /*!< Contiene el numero del registro a operar del segundo parametro o un numero*/
 	uint32_t op3_value; /*!< Contiene el numero del registro a operar del tercer parametro o un numero*/
+    uint8_t registers_list[16];
 }instruction_t;
 
 /** \fn void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera);
     \brief Decodifica la instrucción y la ejecuta.
     \param instruction instrucción a decodificar y ejecutar.
 */
-void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera);
+void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *RAM);
 
 /** \fn instruction_t getInstruction(char* instStr)
     \brief Obtiene la instrucción separada por partes.

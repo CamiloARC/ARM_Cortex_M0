@@ -26,6 +26,7 @@
 
 int main()
 {
+    uint8_t SRAM[96];
     int i, num_instructions;
     ins_t read;
 	char** instructions;
@@ -37,19 +38,26 @@ int main()
 		return 0;
 	instructions = read.array;
 
+    int j; // variable j utilizada como contador
     flags_t bandera;
-	uint32_t registro[15];  // PC=registro[14]  LR=registro[13]
-	registro[14]=0; // PC=0
-	registro[13]=0; // LR=0
+	uint32_t registro[16];  // PC=registro[15]  LR=registro[14] PS=registro[13]
+	registro[15]=0; // PC=0
+	registro[14]=0; // LR=0
+	registro[13]=96; // sp, puntero de pila debe estar una posicion mas arriba
+
 	char entrada; //  Letra que se pulsa para ejecutar de cierta forma el programa
 
 	bandera.C=0;
 	bandera.N=0;
 	bandera.V=0;
 	bandera.Z=0;
-	for(i=0; i<12; i++)
+	for(i=0; i<13; i++) //inicializa todo en 0
     {
         registro[i]=0;
+    }
+    for(i=0;i<96;i++)   // datos de SRAM en FF
+    {
+        SRAM[i]=255;
     }
 	initscr();		// Inicia modo curses
 	curs_set(0);	// Cursor Invisible
@@ -57,21 +65,23 @@ int main()
 	keypad(stdscr, TRUE);	// Obtener F1, F2, etc
 	noecho();		// No imprimir los caracteres leidos
 	start_color();	// Permite manejar colores
+	//init_color(4,500,500,340);
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);	// Pair 1 -> Texto blanco fondo azul
+	init_pair(2, COLOR_YELLOW, COLOR_BLUE);
     attron(COLOR_PAIR(1));	// Activa el color blanco para el texto y azul para el fondo Pair 1
     bkgd(COLOR_PAIR(1));    //  Todo el fondo de color azul
 
-    move(2,10);
-    printw("Emulador ARM CORTEX M0");
-    move(21,10);
-    printw("Presione: t para ejecutar una instruccion cada segundo");
-    move(22,20);
-    printw("s para detener la ejecucion cada segundo");
-    move(23,20);
-    printw("o para salir del emulador");
-
     while(1)
     {
+        move(2,10);
+        printw("Emulador ARM CORTEX M0");
+        move(21,10);
+        printw("Presione: t para ejecutar una instruccion cada segundo");
+        move(22,20);
+        printw("s para detener la ejecucion cada segundo");
+        move(23,20);
+        printw("o para salir del emulador");
+
         move(9,10); // Mueve el cursor a la posición y=6, x=10
         printw("Registros:\t\t\t\t\tBanderas:");
         move(11,10);
@@ -86,43 +96,86 @@ int main()
         printw("R4:%0.8X\tR10:%0.8X",registro[4],registro[10]);
         move(16,10);
         printw("R5:%0.8X\tR11:%0.8X",registro[5],registro[11]);
+        move(17,10);
+        printw("\t\tR12:%0.8X",registro[12]);
         move(18,10);
-        printw("PC: %d",registro[14]*2);    //  Se multiplica por 2 debido a que la memoria del programa es de 8 bits
+        printw("PC: %d",registro[15]*2);    //  Se multiplica por 2 debido a que la memoria del programa es de 8 bits
         move(19,10);
-        printw("LR: %d",registro[13]*2);
+        printw("LR: %d",registro[14]*2);
 
         move(5,10);
-        printw("-> %s",instructions[registro[14]]); //  Muestra la funcion a ejecutar
-        if(registro[14]<num_instructions-2)
+        printw("-> %s",instructions[registro[15]]); //  Muestra la funcion a ejecutar
+        if(registro[15]<num_instructions-1)
         {
             move(6,10);
-            printw("%s",instructions[registro[14]+1]);  // Muestra la siguiente funcion a ejecutar
+            printw("%s",instructions[registro[15]+1]);  // Muestra la siguiente funcion a ejecutar
         }
-        instruction=getInstruction(instructions[registro[14]]); // Instrucción en la posición PC
-        decodeInstruction(instruction,&registro[0],&bandera);
+        else
+        {
+            move(6,10);
+            printw("                   ");
+        }
 
         border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);
 
         entrada=getch();
-
-        if(entrada=='t')    //  Muestra instruccion cada segundo
+        if(entrada=='r')    //  Observar la memoria ram
         {
-            timeout(1000);
+            clear();
+            border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);
+            move(2,10);
+            printw("Emulador ARM CORTEX M0");
+            move(4,10);
+            printw("Memoria RAM");
+            attron(COLOR_PAIR(2));
+            for(j=0;j<6;j++)
+            {
+                for(i=0;i<16;i++)
+                {
+                    move(i+6,10+j*10);
+                    printw("0x%0.2X:",95-i-16*j);
+                }
+            }
+            attron(COLOR_PAIR(1));
+            for(j=0;j<6;j++)
+            {
+                for(i=0;i<16;i++)
+                {
+                    move(i+6,15+j*10);
+                    printw("%0.2X",SRAM[95-i-16*j]);
+                }
+            }
+            while(1)    // Mientras presione una tecla diferente a r, muestra la memoria RAM y no ejecuta instrucciones
+            {
+                entrada=getch();
+                if(entrada=='r')
+                {
+                    break;
+                }
+            }
+            clear();
+            attron(COLOR_PAIR(1));
         }
         if(entrada=='s')    //  Parar timeout
         {
             timeout(-1);
-            getch();
+            entrada=getch();
+        }
+        if(entrada=='t')    //  Muestra instruccion cada segundo
+        {
+            timeout(1000);
         }
         if(entrada=='o')    //  Salir
         {
-            registro[14]=num_instructions;
+            registro[15]=num_instructions;
         }
-
-        if(registro[14]>num_instructions-1) // Sucede cuando se termina la ejecucion
+        if(registro[15]>num_instructions-1) // Sucede cuando se termina la ejecucion
         {
             break;
         }
+
+        instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
+        decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
 
     }
     for(i=0; i<num_instructions; i++)
