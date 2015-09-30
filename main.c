@@ -26,12 +26,13 @@
 
 int main()
 {
-    uint8_t SRAM[96];
+    bool cond=0;  // variable utilizada para realizar o no la funcion decodeInstruction()
+    uint8_t SRAM[96];       // variable donde esta contenida parte de la RAM
     int i, num_instructions;
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("prueba.txt",&read);
+    num_instructions = readFile("prueba.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -67,7 +68,7 @@ int main()
 	start_color();	// Permite manejar colores
 	//init_color(4,500,500,340);
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);	// Pair 1 -> Texto blanco fondo azul
-	init_pair(2, COLOR_YELLOW, COLOR_BLUE);
+	init_pair(2, COLOR_YELLOW, COLOR_BLUE); // Pair 2 -> Texto amarillo fondo azul
     attron(COLOR_PAIR(1));	// Activa el color blanco para el texto y azul para el fondo Pair 1
     bkgd(COLOR_PAIR(1));    //  Todo el fondo de color azul
 
@@ -81,8 +82,12 @@ int main()
         printw("s para detener la ejecucion cada segundo");
         move(23,20);
         printw("o para salir del emulador");
+        move(24,20);
+        printw("r para observar la SRAM");
+        move(25,20);
+        printw("ESPACIO para ejecutar la instruccion");
 
-        move(9,10); // Mueve el cursor a la posición y=6, x=10
+        move(9,10); // Mueve el cursor a la posición y=9, x=10
         printw("Registros:\t\t\t\t\tBanderas:");
         move(11,10);
         printw("R0:%0.8X\tR6:%0.8X\t\t\tC>>%d",registro[0],registro[6],bandera.C);
@@ -113,14 +118,19 @@ int main()
         else
         {
             move(6,10);
-            printw("                   ");
+            printw("                   ");  // Si es la ultima funcion, no muestra nada en la siguiente
         }
 
-        border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);
+        border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);    //Borde
 
         entrada=getch();
+        if(entrada==' ')
+        {
+            cond=1;
+        }
         if(entrada=='r')    //  Observar la memoria ram
         {
+            cond=0;
             clear();
             border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);
             move(2,10);
@@ -128,7 +138,7 @@ int main()
             move(4,10);
             printw("Memoria RAM");
             attron(COLOR_PAIR(2));
-            for(j=0;j<6;j++)
+            for(j=0;j<6;j++)    // mostrar las direcciones de memoria de la SRAM
             {
                 for(i=0;i<16;i++)
                 {
@@ -137,7 +147,7 @@ int main()
                 }
             }
             attron(COLOR_PAIR(1));
-            for(j=0;j<6;j++)
+            for(j=0;j<6;j++)    // mostrar el contenido de las direcciones de memoria
             {
                 for(i=0;i<16;i++)
                 {
@@ -145,6 +155,8 @@ int main()
                     printw("%0.2X",SRAM[95-i-16*j]);
                 }
             }
+            move(23,10);
+            printw("Presione: r para salir del modo mostrar SRAM");
             while(1)    // Mientras presione una tecla diferente a r, muestra la memoria RAM y no ejecuta instrucciones
             {
                 entrada=getch();
@@ -154,24 +166,28 @@ int main()
                 }
             }
             clear();
-            attron(COLOR_PAIR(1));
         }
         if(entrada=='s')    //  Parar timeout
         {
+            cond=0;
             timeout(-1);
             entrada=getch();
         }
         if(entrada=='t')    //  Muestra instruccion cada segundo
         {
             timeout(1000);
+            cond=1;
         }
         if(entrada=='o')    //  Salir
         {
+            cond=0;
             registro[15]=num_instructions;
         }
-
-        instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
-        decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
+        if(cond==1) //realiza el ciclo si se presiono espacio o t
+        {
+            instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
+            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
+        }
         if(registro[15]>num_instructions-1) // Sucede cuando se termina la ejecucion
         {
             break;
