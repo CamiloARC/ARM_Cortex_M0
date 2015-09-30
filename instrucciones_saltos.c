@@ -7,177 +7,177 @@
 
 void B(uint32_t *registro,int salto)
 {
-    registro[14]+=salto;    // PC=PC+salto
+    registro[15]+=salto;    // PC=PC+salto
 }
 void BL(uint32_t *registro,int salto)   // Siempre recibe un numero
 {
-    registro[13]=registro[14]+2;    //  LR=PC+2
-    registro[14]+=salto;            //  PC=PC+salto
+    registro[14]=registro[15]+2;    //  LR=PC+2
+    registro[15]+=salto;            //  PC=PC+salto
 }
 void BLX(uint32_t *registro,uint32_t R) // Siempre recibe un registro
 {
-    registro[13]=registro[14]+2;    //  LR=PC+2
-    registro[14]+=(int32_t)R;       //  PC=PC+R
+    registro[14]=registro[15]+2;    //  LR=PC+2
+    registro[15]+=(int32_t)R;       //  PC=PC+R
 }
 void BX(uint32_t *registro,uint32_t R)  // Siempre recibe un registro
 {
-    registro[14]=R;
+    registro[15]=R;
 }
 void BEQ(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.Z==1)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BNE(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.Z==0)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BCS(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.C==1)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BCC(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.C==0)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BMI(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.N==1)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BPL(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.N==0)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BVS(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.V==1)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BVC(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.V==0)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BHI(uint32_t *registro,int salto,flags_t bandera)
 {
     if((bandera.C==1)&&(bandera.Z==0))
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BLS(uint32_t *registro,int salto,flags_t bandera)
 {
     if((bandera.C==0)||(bandera.Z==1))
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BGE(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.N==bandera.V)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BLT(uint32_t *registro,int salto,flags_t bandera)
 {
     if(bandera.N!=bandera.V)
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BGT(uint32_t *registro,int salto,flags_t bandera)
 {
     if((bandera.Z==0)&&(bandera.N==bandera.V))
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BLE(uint32_t *registro,int salto,flags_t bandera)
 {
     if((bandera.Z==0)||(bandera.N!=bandera.V))
     {
-        registro[14]+=salto;
+        registro[15]+=salto;
     }
     else
     {
-        registro[14]++;
+        registro[15]++;
     }
 }
 void BAL(uint32_t *registro,int salto,flags_t bandera)
 {
-    registro[14]+=salto;
+    registro[15]+=salto;
 }

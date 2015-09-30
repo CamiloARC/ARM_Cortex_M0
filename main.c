@@ -31,7 +31,7 @@ int main()
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("code.txt",&read);
+    num_instructions = readFile("prueba.txt",&read);
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -169,14 +169,13 @@ int main()
         {
             registro[15]=num_instructions;
         }
+
+        instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
+        decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
         if(registro[15]>num_instructions-1) // Sucede cuando se termina la ejecucion
         {
             break;
         }
-
-        instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
-        decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
-
     }
     for(i=0; i<num_instructions; i++)
     {

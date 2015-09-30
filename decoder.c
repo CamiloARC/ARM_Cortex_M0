@@ -13,6 +13,11 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         push(registro,SRAM,&instruction.registers_list[0]);
         registro[15]++;
     }
+    if( strcmp(instruction.mnemonic,"POP") ==0)
+    {
+        pop(registro,SRAM,&instruction.registers_list[0]);
+        registro[15]++;
+    }
 	if( strcmp(instruction.mnemonic,"ADDS") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))	//	si se tienen como parametros 2 registros
