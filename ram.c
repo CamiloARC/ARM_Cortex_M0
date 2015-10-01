@@ -1,9 +1,14 @@
 #include "ram.h"
 
+/** \file ram.c
+ *  \brief Documento en el cual se desarrollan las funciones relacionadas con el manejo de RAM
+*/
+
 void push(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list)
 {
-    uint32_t direccion,bitcount=0;
-    int i,j;
+    uint32_t direccion,bitcount=0;  //direccion es la cantidad de bytes de la RAM que se van a utilizar
+                                    // bitcount es una variable auxiliar para reservar memoria enla RAM
+    int i,j;                        //variables con uso de contador
     for(i=0;i<8;i++)
     {
         if(registers_list[i]==1)
@@ -25,11 +30,13 @@ void push(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list)
     }
     registro[13]=registro[13]-4*bitcount;
 }
+
 void pop(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list)
 {
-    uint32_t direccion,bitcount=0;
-    direccion=registro[13];
-    int i;
+    uint32_t direccion,bitcount=0;   //direccion es la cantidad de bytes de la RAM que se van a utilizar
+                                     // bitcount es una variable auxiliar para reservar memoria enla RAM
+    direccion=registro[13];          // direccion igual a SP
+    int i;                           //  variable i utilizada como contador
     for(i=0;i<8;i++)
     {
         if(registers_list[i]==1)
