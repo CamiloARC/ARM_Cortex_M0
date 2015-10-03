@@ -26,13 +26,14 @@
 
 int main()
 {
+    uint16_t codificacion=0;
     bool cond=0;  // variable utilizada para realizar o no la funcion decodeInstruction()
     uint8_t SRAM[96];       // variable donde esta contenida parte de la RAM
     int i, num_instructions;
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("prueba.txt",&read);    // Abrir el codigo
+    num_instructions = readFile("code.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -110,6 +111,8 @@ int main()
 
         move(5,10);
         printw("-> %s",instructions[registro[15]]); //  Muestra la funcion a ejecutar
+        move(5,40);
+        printw("0x%0.4X",codificacion);
         if(registro[15]<num_instructions-1)
         {
             move(6,10);
@@ -186,7 +189,7 @@ int main()
         if(cond==1) //realiza el ciclo si se presiono espacio o t
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
-            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0]);
+            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion);
         }
         if(registro[15]>num_instructions-1) // Sucede cuando se termina la ejecucion
         {

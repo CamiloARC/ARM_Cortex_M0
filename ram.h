@@ -22,4 +22,6 @@ void push(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list);
  */
 void pop(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list);
 
+void LDR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
+
 #endif // RAM_H_INCLUDED

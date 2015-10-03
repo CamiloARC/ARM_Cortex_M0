@@ -55,3 +55,8 @@ void pop(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list)
     }
     registro[13]=registro[13]+4*bitcount;
 }
+void LDR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
+{
+    uint32_t direccion=Rn+(Rm<<2);
+    *Rt=(uint32_t)(SRAM[direccion]<<24)+(uint32_t)(SRAM[direccion+1]<<16)+(uint32_t)(SRAM[direccion+2]<<8)+SRAM[direccion+3];
+}

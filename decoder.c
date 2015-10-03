@@ -5,8 +5,9 @@
  *  \brief Documento en el cual se realiza el proceso de extraer las instrucciones del code.txt, segmentarlas y comparar el mnemonic con el nombre de cada instruccion, asi realizar la instruccion deseada
 */
 
-void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *SRAM)
+void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *SRAM, uint16_t *codificacion)
 {
+    *codificacion=0;    // valor incial
 	//	comparar el mnemonic con el nombre de cada una de las funciones, y asi ejecutar la adecuada
     if( strcmp(instruction.mnemonic,"PUSH") ==0)
     {
@@ -18,21 +19,37 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         pop(registro,SRAM,&instruction.registers_list[0]);
         registro[15]++;
     }
+    if( strcmp(instruction.mnemonic,"ADCS") ==0)
+    {
+        *codificacion+=(1<<14)+(5<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
+		{
+			ADCS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera);
+		}
+        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
+		{
+			ADCS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
+        }
+        registro[15]++;
+	}
 	if( strcmp(instruction.mnemonic,"ADDS") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))	//	si se tienen como parametros 2 registros
         {
             ADDS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera); // envio como parametros la direccion de registro[instruction.op1_value], el valor de registro[registro+instruction.op2_value] y de registro[registro+instruction.op3_value]
+            *codificacion+=(3<<11)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))	// si se tienen como parametros un registro[instruction.op1_value], el valor de registro[registro+instruction.op2_value] y instruction.op3_value
         {
             ADDS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera); // envio como parametros la direccion de
+            *codificacion+=(7<<10)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
         }
         registro[15]++;
 	}
 	// los parametros de las demas funciones aritmeticas, de desplazamiento y logicas son similares
     if( strcmp(instruction.mnemonic,"ANDS") ==0)
     {
+        *codificacion+=(1<<14)+(instruction.op2_value<<3)+instruction.op1_value;
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
 		{
 			ANDS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera);
@@ -40,6 +57,19 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
 		{
 			ANDS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
+        }
+        registro[15]++;
+    }
+    if( strcmp(instruction.mnemonic,"ASRS") ==0)
+    {
+        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
+		{
+			ASRS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera);
+        }
+        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
+		{
+			ASRS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
+            *codificacion+=(1<<12)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
         }
         registro[15]++;
     }
@@ -139,18 +169,6 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         }
         registro[15]++;
     }
-    if( strcmp(instruction.mnemonic,"ASRS") ==0)
-    {
-        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
-		{
-			ASRS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera);
-        }
-        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
-		{
-			ASRS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
-        }
-        registro[15]++;
-    }
     if( strcmp(instruction.mnemonic,"RORS") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R'))
@@ -223,18 +241,6 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         }
         registro[15]++;
     }
-    if( strcmp(instruction.mnemonic,"ADCS") ==0)
-    {
-        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
-		{
-			ADCS(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value), bandera);
-		}
-        if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
-		{
-			ADCS(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,bandera);
-        }
-        registro[15]++;
-	}
     if( strcmp(instruction.mnemonic,"SBCS") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
@@ -387,6 +393,9 @@ instruction_t getInstruction(char* instStr)
 				break;
 
 			case 2:
+			    if(split[0] == '[')
+					split++;
+
 				instruction.op2_type  = split[0];
 				instruction.op2_value = (uint32_t)strtoll(split+1, NULL, 0);
 				break;
