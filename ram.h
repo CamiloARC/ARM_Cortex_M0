@@ -39,4 +39,44 @@ void LDR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
  * \return la funcion no retorna nada
  */
 
+void LDRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
+
+/** \brief funcion utlizada para extraer registros en la SRAM
+ * \param registro puntero del primer elemento del arreglo registro
+ * \param registro a operar
+ * \param registro a operar
+ * \param SRAM puntero del primer elemento del arreglo SRAM
+ * \return la funcion no retorna nada
+ */
+
+void LDRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
+
+/** \brief funcion utlizada para extraer registros en la SRAM
+ * \param registro puntero del primer elemento del arreglo registro
+ * \param registro a operar
+ * \param registro a operar
+ * \param SRAM puntero del primer elemento del arreglo SRAM
+ * \return la funcion no retorna nada
+ */
+
+void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
+
+/** \brief funcion utlizada para extraer registros en la SRAM
+ * \param registro puntero del primer elemento del arreglo registro
+ * \param registro a operar
+ * \param registro a operar
+ * \param SRAM puntero del primer elemento del arreglo SRAM
+ * \return la funcion no retorna nada
+ */
+
+void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
+
+/** \brief funcion utlizada para extraer registros en la SRAM
+ * \param registro puntero del primer elemento del arreglo registro
+ * \param registro a operar
+ * \param registro a operar
+ * \param SRAM puntero del primer elemento del arreglo SRAM
+ * \return la funcion no retorna nada
+ */
+
 #endif // RAM_H_INCLUDED
