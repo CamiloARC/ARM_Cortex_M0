@@ -97,7 +97,7 @@ void MOVS(uint32_t *Rd,uint32_t Rm,flags_t *bandera)
 	flags_global(*Rd,bandera);
 }
 
-void MUL(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+void MULS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
     *Rd=(uint32_t)(Rn*Rm);
     //   no modifica bandera de sobreflujo, ni bandera de carry
@@ -213,4 +213,3 @@ void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera)
     //   no modifica bandera de sobreflujo, ni bandera de carry
     flags_global(Rn,bandera);
 }
-

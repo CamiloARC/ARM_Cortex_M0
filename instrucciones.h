@@ -135,7 +135,7 @@ void MOVS(uint32_t *Rd,uint32_t Rm,flags_t *bandera);
 * \param bandera puntero a la estructura bandera de entrada
 * \return La funcion no tiene retorno
 */
-void MUL(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+void MULS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
 /**
  * \brief funcion que guarda el complemento de un numero o registro Rm y lo guarda en Rd
