@@ -41,7 +41,7 @@ int main()
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("prueba2.txt",&read);    // Abrir el codigo
+    num_instructions = readFile("prueba.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -214,7 +214,7 @@ int main()
         if(cond==1) //realiza el ciclo si se presiono espacio o t
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
-            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion);
+            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion,&instructions[0]);
         }
         if((registro[15]>num_instructions-1)&&(FlagInt==0)) // Sucede cuando se termina la ejecucion
         {

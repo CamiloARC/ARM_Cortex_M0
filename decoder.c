@@ -5,7 +5,7 @@
  *  \brief Documento en el cual se realiza el proceso de extraer las instrucciones del code.txt, segmentarlas y comparar el mnemonic con el nombre de cada instruccion, asi realizar la instruccion deseada
 */
 
-void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *SRAM, uint16_t *codificacion)
+void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera, uint8_t *SRAM, uint16_t *codificacion, char **Flash)
 {
     int i;
     *codificacion=0;    // valor incial
@@ -14,24 +14,70 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
         {
-            *codificacion=(13<<11)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+            *codificacion=(13<<11)+((instruction.op3_value&0xFF)<<6)+(instruction.op2_value<<3)+instruction.op1_value;
             instruction.op3_value<<=2;
-            LDR(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,SRAM);
+            if(((*(registro+instruction.op2_value)+instruction.op3_value)>=0x20000000)&&((*(registro+instruction.op2_value)+instruction.op3_value)<0x40000000))
+            {
+                LDR(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value&0xFF,SRAM);
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)<0x20000000)
+            {
+
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)>=0x40000000)
+            {
+
+            }
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            *codificacion=(19<<11)+(instruction.op1_value<<8)+instruction.op3_value;
+            *codificacion=(19<<11)+(instruction.op1_value<<8)+(instruction.op3_value&0xFF);
             instruction.op3_value<<=2;
-            LDR(registro+instruction.op1_value,*(registro+13),instruction.op3_value,SRAM);
+            if(((*(registro+13)+instruction.op3_value)>=0x20000000)&&((*(registro+13)+instruction.op3_value)<0x40000000))
+            {
+                LDR(registro+instruction.op1_value,*(registro+13),instruction.op3_value&0xFF,SRAM);
+            }
+            if((*(registro+13)+instruction.op3_value)<0x20000000)
+            {
+
+            }
+            if((*(registro+13)+instruction.op3_value)>=0x40000000)
+            {
+
+            }
         }
-        if((instruction.op1_type=='R') && (instruction.op2_type=='='))
+        if((instruction.op1_type=='R') && (instruction.op2_type=='P') && (instruction.op3_type=='#')) // label
         {
-            *codificacion=(9<<11)+(instruction.op1_value<<8);
+            *codificacion=(9<<11)+(instruction.op1_value<<8)+(instruction.op3_value&0xFF);
+            instruction.op3_value<<=2;
+            if(((*(registro+15)+instruction.op3_value)>=0x20000000)&&((*(registro+15)+instruction.op3_value)<0x40000000))
+            {
+                LDR(registro+instruction.op1_value,*(registro+15),instruction.op3_value&0xFF,SRAM);
+            }
+            if((*(registro+15)+instruction.op3_value)<0x20000000)
+            {
+
+            }
+            if((*(registro+15)+instruction.op3_value)>=0x40000000)
+            {
+
+            }
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
         {
-            LDR(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
             *codificacion=(11<<11)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+            if(((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x20000000)&&(*(registro+instruction.op2_value)+*(registro+instruction.op3_value)<0x40000000))
+            {
+                LDR(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+            }
+            if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))<0x20000000)
+            {
+
+            }
+            if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
+            {
+
+            }
         }
         registro[15]++;
     }
@@ -39,13 +85,36 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
         {
-            LDRB(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,SRAM);
             *codificacion=(15<<11)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+            if(((*(registro+instruction.op2_value)+instruction.op3_value)>=0x20000000)&&((*(registro+instruction.op2_value)+instruction.op3_value)<0x40000000))
+            {
+                LDRB(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value&0xFF,SRAM);
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)<0x20000000)
+            {
+
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)>=0x40000000)
+            {
+
+            }
+
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
         {
-            LDRB(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
             *codificacion=(1<<14)+(7<<10)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+            if(((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x20000000)&&(*(registro+instruction.op2_value)+*(registro+instruction.op3_value)<0x40000000))
+            {
+                LDRB(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+            }
+            if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))<0x20000000)
+            {
+
+            }
+            if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
+            {
+
+            }
         }
         registro[15]++;
     }
@@ -55,27 +124,74 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
         {
             *codificacion=(1<<15)+(1<<11)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
             instruction.op3_value<<=1;
-            LDRH(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,SRAM);
+            if(((*(registro+instruction.op2_value)+instruction.op3_value)>=0x20000000)&&((*(registro+instruction.op2_value)+instruction.op3_value)<0x40000000))
+            {
+                LDRH(registro+instruction.op1_value,*(registro+instruction.op2_value),instruction.op3_value,SRAM);
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)<0x20000000)
+            {
+
+            }
+            if((*(registro+instruction.op2_value)+instruction.op3_value)>=0x40000000)
+            {
+
+            }
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
         {
-            LDRH(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
             *codificacion=(5<<12)+(5<<9)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
+            if(((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x20000000)&&(*(registro+instruction.op2_value)+*(registro+instruction.op3_value)<0x40000000))
+            {
+                LDRH(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+            }
+
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))<0x20000000)
+        {
+
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
+        {
+
         }
         registro[15]++;
     }
+
     if( strcmp(instruction.mnemonic,"LDRSB") ==0)
     {
         *codificacion=(5<<12)+(3<<9)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
-        LDRSB(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+        if(((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x20000000)&&(*(registro+instruction.op2_value)+*(registro+instruction.op3_value)<0x40000000))
+        {
+            LDRSB(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))<0x20000000)
+        {
+
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
+        {
+
+        }
         registro[15]++;
     }
     if( strcmp(instruction.mnemonic,"LDRSH") ==0)
     {
         *codificacion=(5<<12)+(7<<9)+(instruction.op3_value<<6)+(instruction.op2_value<<3)+instruction.op1_value;
-        LDRSH(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+        if(((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x20000000)&&(*(registro+instruction.op2_value)+*(registro+instruction.op3_value)<0x40000000))
+        {
+            LDRSH(registro+instruction.op1_value,*(registro+instruction.op2_value),*(registro+instruction.op3_value),SRAM);
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))<0x20000000)
+        {
+
+        }
+        if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
+        {
+
+        }
         registro[15]++;
     }
+
     if( strcmp(instruction.mnemonic,"STR") ==0)
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='#'))
@@ -396,11 +512,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     }
     if( strcmp(instruction.mnemonic,"BL") ==0)
     {
-        *codificacion=(15<<12)+instruction.op1_value;
-        if(instruction.op1_value<0)
-        {
-            *codificacion+=(1<<10);
-        }
+        *codificacion=(31<<11)+(2047&instruction.op1_value);
         BL(registro,instruction.op1_value);	// Envio como parametroa la direccion de registro y el valor del salto
     }
     if( strcmp(instruction.mnemonic,"BLX") ==0)

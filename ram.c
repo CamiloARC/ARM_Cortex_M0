@@ -68,7 +68,7 @@ void LDRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 void LDRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=Rn+Rm;
-    *Rt=(uint32_t)SRAM[direccion]+(uint32_t)(SRAM[direccion+1]<<8);
+    *Rt=(uint32_t)(SRAM[direccion]<<8)+(uint32_t)SRAM[direccion+1];
 }
 void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
@@ -82,7 +82,7 @@ void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=Rn+Rm;
-    *Rt=(uint32_t)(SRAM[direccion])+(uint32_t)(SRAM[direccion+1]<<8);
+    *Rt=(uint32_t)(SRAM[direccion]<<8)+(uint32_t)SRAM[direccion+1];
     if(*Rt>=32768)
     {
         *Rt+=0xFFFF0000;
