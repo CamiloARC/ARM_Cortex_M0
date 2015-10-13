@@ -88,18 +88,6 @@ void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
         *Rt+=0xFFFF0000;
     }
 }
-void STR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
-{
-
-}
-void STRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
-{
-
-}
-void STRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
-{
-
-}
 
 void STR(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM)
 {
