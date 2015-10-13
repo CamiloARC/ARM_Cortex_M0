@@ -7,6 +7,7 @@
 #include "instrucciones_saltos.h"
 #include "curses.h"
 #include "nvic.h"
+#include "io.h"
 
 /** \mainpage Emulador del procesador ARM Cortex -M0
  *  Esta es la documentacion para un sofware que simula el procesador ARM Cortex -M0 el cual es el procesador ARM
@@ -35,6 +36,7 @@ int main()
     uint8_t SRAM[96];       // variable donde esta contenida parte de la RAM
     int j; // variable j utilizada como contador
 	char entrada; //  Letra que se pulsa para ejecutar de cierta forma el programa
+    initIO();
     // terminan variables de desarrollo
 
     int i, num_instructions;
@@ -88,48 +90,49 @@ int main()
     registro[15]=0;
     while(1)
     {
+        showPorts();
         NVIC(&interrupcion[0],&FlagInt,&registro[0],&bandera,&SRAM[0]);
         move(2,10);
         printw("Emulador ARM CORTEX M0");
-        move(21,10);
+        move(19,10);
         printw("Presione: t para ejecutar una instruccion cada segundo");
-        move(22,20);
+        move(20,20);
         printw("s para detener la ejecucion cada segundo");
-        move(23,20);
+        move(21,20);
         printw("o para salir del emulador");
-        move(24,20);
+        move(22,20);
         printw("r para observar la SRAM");
-        move(25,20);
+        move(23,20);
         printw("ESPACIO para ejecutar la instruccion");
 
-        move(9,10); // Mueve el cursor a la posición y=9, x=10
+        move(7,10); // Mueve el cursor a la posición y=9, x=10
         printw("Registros:\t\t\t\t\tBanderas:");
-        move(11,10);
+        move(9,10);
         printw("R0:%0.8X\tR6:%0.8X\t\t\tC>>%d",registro[0],registro[6],bandera.C);
-        move(12,10);
+        move(10,10);
         printw("R1:%0.8X\tR7:%0.8X\t\t\tN>>%d",registro[1],registro[7],bandera.N);
-        move(13,10);
+        move(11,10);
         printw("R2:%0.8X\tR8:%0.8X\t\t\tZ>>%d",registro[2],registro[8],bandera.Z);
-        move(14,10);
+        move(12,10);
         printw("R3:%0.8X\tR9:%0.8X\t\t\tV>>%d",registro[3],registro[9],bandera.V);
-        move(15,10);
+        move(13,10);
         printw("R4:%0.8X\tR10:%0.8X",registro[4],registro[10]);
-        move(16,10);
+        move(14,10);
         printw("R5:%0.8X\tR11:%0.8X",registro[5],registro[11]);
-        move(17,10);
+        move(15,10);
         printw("\t\tR12:%0.8X",registro[12]);
-        move(18,10);
+        move(16,10);
         printw("PC: %d",registro[15]*2);    //  Se multiplica por 2 debido a que la memoria del programa es de 8 bits
-        move(19,10);
+        move(17,10);
         printw("LR: %d",registro[14]*2);
 
-        move(5,10);
+        move(4,10);
         printw("-> %s",instructions[registro[15]]); //  Muestra la funcion a ejecutar
-        move(5,40);
+        move(4,40);
         printw("0x%0.4X",codificacion);
         if(registro[15]<num_instructions-1)
         {
-            move(6,10);
+            move(5,10);
             printw("%s",instructions[registro[15]+1]);  // Muestra la siguiente funcion a ejecutar
         }
         else

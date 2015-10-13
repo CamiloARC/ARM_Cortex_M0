@@ -88,25 +88,22 @@ void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
         *Rt+=0xFFFF0000;
     }
 }
-
-void STR(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM)
+void STR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion = Rn + Rm;
-    SRAM[direccion + 3] = (uint8_t)(*Rt>>24);
-    SRAM[direccion + 2] = (uint8_t)(*Rt>>16);
-    SRAM[direccion + 1] = (uint8_t)(*Rt>>8);
-    SRAM[direccion] = (uint8_t)(*Rt);
+    SRAM[direccion+3]=(uint8_t)*Rt;
+    SRAM[direccion+2]=(uint8_t)(*Rt>>8);
+    SRAM[direccion+1]=(uint8_t)(*Rt>>16);
+    SRAM[direccion]=(uint8_t)(*Rt>>24);
 }
-
-void STRB(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM)
+void STRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
-    uint32_t direccion = Rn + Rm;
-    SRAM[direccion] = (uint8_t)(*Rt);
+    uint32_t direccion=Rn+Rm;
+    SRAM[direccion]=(uint8_t)(*Rt);
 }
-
-void STRH(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM)
+void STRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
-    uint32_t direccion = 0;
-    SRAM[direccion + 1] = (uint8_t)(*Rt>>8);
-    SRAM[direccion] = (uint8_t)(*Rt);
+    uint32_t direccion=0;
+    SRAM[direccion+1]=(uint8_t)(*Rt>>8);
+    SRAM[direccion]=(uint8_t)(*Rt);
 }
