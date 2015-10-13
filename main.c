@@ -6,6 +6,7 @@
 #include "instrucciones.h"
 #include "instrucciones_saltos.h"
 #include "curses.h"
+#include "nvic.h"
 
 /** \mainpage Emulador del procesador ARM Cortex -M0
  *  Esta es la documentacion para un sofware que simula el procesador ARM Cortex -M0 el cual es el procesador ARM
@@ -26,28 +27,33 @@
 
 int main()
 {
+    // variables de desarrollo
+    bool interrupcion[32]; //arreglo de unos y ceros, el cual indica que interrupciones realizar
+    bool FlagInt=0; // bandera que indica si hay o no una interrupcion
     uint16_t codificacion=0;
     bool cond=0;  // variable utilizada para realizar o no la funcion decodeInstruction()
     uint8_t SRAM[96];       // variable donde esta contenida parte de la RAM
+    int j; // variable j utilizada como contador
+	char entrada; //  Letra que se pulsa para ejecutar de cierta forma el programa
+    // terminan variables de desarrollo
+
     int i, num_instructions;
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("code.txt",&read);    // Abrir el codigo
+    num_instructions = readFile("prueba.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
 		return 0;
 	instructions = read.array;
 
-    int j; // variable j utilizada como contador
+    //condiciones iniciales
     flags_t bandera;
-	uint32_t registro[16];  // PC=registro[15]  LR=registro[14] PS=registro[13]
+	uint32_t registro[16];  // PC=registro[15]  LR=registro[14] SP=registro[13]
 	registro[15]=0; // PC=0
 	registro[14]=0; // LR=0
-	registro[13]=96; // sp, puntero de pila debe estar una posicion mas arriba
-
-	char entrada; //  Letra que se pulsa para ejecutar de cierta forma el programa
+	registro[13]=96; // SP, puntero de pila debe estar una posicion mas arriba
 
 	bandera.C=0;
 	bandera.N=0;
@@ -61,6 +67,12 @@ int main()
     {
         SRAM[i]=255;
     }
+    for(i=0;i<32;i++)
+    {
+        interrupcion[i]=0;
+    }
+    // terminan las condiciones iniciales
+
 	initscr();		// Inicia modo curses
 	curs_set(0);	// Cursor Invisible
 	raw();			// Activa modo raw
@@ -73,8 +85,10 @@ int main()
     attron(COLOR_PAIR(1));	// Activa el color blanco para el texto y azul para el fondo Pair 1
     bkgd(COLOR_PAIR(1));    //  Todo el fondo de color azul
 
+    registro[15]=0;
     while(1)
     {
+        NVIC(&interrupcion[0],&FlagInt,&registro[0],&bandera,&SRAM[0]);
         move(2,10);
         printw("Emulador ARM CORTEX M0");
         move(21,10);
@@ -127,6 +141,17 @@ int main()
         border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);    //Borde
 
         entrada=getch();
+
+        if(entrada=='1')
+        {
+            interrupcion[0]=1;
+            cond=1;
+        }
+        if(entrada=='2')
+        {
+            interrupcion[1]=1;
+            cond=1;
+        }
         if(entrada==' ')
         {
             cond=1;
@@ -172,9 +197,8 @@ int main()
         }
         if(entrada=='s')    //  Parar timeout
         {
-            cond=0;
             timeout(-1);
-            entrada=getch();
+            cond=0;
         }
         if(entrada=='t')    //  Muestra instruccion cada segundo
         {
@@ -185,13 +209,14 @@ int main()
         {
             cond=0;
             registro[15]=num_instructions;
+            FlagInt=0;
         }
         if(cond==1) //realiza el ciclo si se presiono espacio o t
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
-            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion);
+            decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion,&instructions[0]);
         }
-        if(registro[15]>num_instructions-1) // Sucede cuando se termina la ejecucion
+        if((registro[15]>num_instructions-1)&&(FlagInt==0)) // Sucede cuando se termina la ejecucion
         {
             break;
         }
