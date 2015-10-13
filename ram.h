@@ -79,4 +79,10 @@ void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
  * \return la funcion no retorna nada
  */
 
+ void STR(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
+
+ void STRB(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
+
+ void STRH(uint32_t *Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
+
 #endif // RAM_H_INCLUDED
