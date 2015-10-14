@@ -64,11 +64,13 @@ void LDRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=(Rn+Rm)&0xFF;
     *Rt=(uint32_t)SRAM[direccion];
+    //Rt recibe el valor del primer byte superior en memoria
 }
 void LDRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=(Rn+Rm)&0xFF;
     *Rt=(uint32_t)(SRAM[direccion]<<8)+(uint32_t)SRAM[direccion+1];
+    //Rt recibe el valor de los 2 bytes superiores en memoria
 }
 void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
@@ -78,6 +80,7 @@ void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
     {
         *Rt+=0xFFFFFF00;
     }
+    //Rt recibe el valor del primer byte superior en memoria manteniendo extension de signo
 }
 void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
@@ -87,7 +90,9 @@ void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
     {
         *Rt+=0xFFFF0000;
     }
+    //Rt recibe el valor de los 2 bytes superiores en memoria manteniendo extension de signo
 }
+
 void STR(uint32_t Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=(Rn+Rm)&0xFF;
@@ -95,15 +100,20 @@ void STR(uint32_t Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
     SRAM[direccion+2]=(uint8_t)(Rt>>8);
     SRAM[direccion+1]=(uint8_t)(Rt>>16);
     SRAM[direccion]=(uint8_t)(Rt>>24);
+
+    // Los 4 primeros bytes en memoria reciben el valor de Rt
 }
 void STRB(uint32_t Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=(Rn+Rm)&0xFF;
     SRAM[direccion]=(uint8_t)(Rt);
+    // El primer byte en memoria reciben el valor de Rt
 }
 void STRH(uint32_t Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM)
 {
     uint32_t direccion=(Rn+Rm)&0xFF;
     SRAM[direccion+1]=(uint8_t)Rt;
     SRAM[direccion]=(uint8_t)(Rt>>8);
+
+    // Los 2 primeros bytes en memoria reciben el valor de Rt
 }
