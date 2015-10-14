@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "io.h"
 #include "instrucciones.h"
 #include "instrucciones_saltos.h"
 #include "ram.h"

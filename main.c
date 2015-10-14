@@ -26,6 +26,7 @@
  *  y ademas en ella se trabaja con las instrucciones adquiridas del code.txt
 */
 
+extern uint8_t irq[16];
 int main()
 {
     // variables de desarrollo
@@ -35,8 +36,7 @@ int main()
     bool cond=0;  // variable utilizada para realizar o no la funcion decodeInstruction()
     uint8_t SRAM[96];       // variable donde esta contenida parte de la RAM
     int j; // variable j utilizada como contador
-	char entrada; //  Letra que se pulsa para ejecutar de cierta forma el programa
-    initIO();
+	char entrada='.'; //  Letra que se pulsa para ejecutar de cierta forma el programa
     // terminan variables de desarrollo
 
     int i, num_instructions;
@@ -74,20 +74,18 @@ int main()
         interrupcion[i]=0;
     }
     // terminan las condiciones iniciales
-
-	initscr();		// Inicia modo curses
-	curs_set(0);	// Cursor Invisible
-	raw();			// Activa modo raw
-	keypad(stdscr, TRUE);	// Obtener F1, F2, etc
-	noecho();		// No imprimir los caracteres leidos
-	start_color();	// Permite manejar colores
-	//init_color(4,500,500,340);
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);	// Pair 1 -> Texto blanco fondo azul
-	init_pair(2, COLOR_YELLOW, COLOR_BLUE); // Pair 2 -> Texto amarillo fondo azul
+    initscr();		// Inicia modo curses
+    curs_set(0);	// Cursor Invisible
+    raw();			// Activa modo raw
+    keypad(stdscr, TRUE);	// Obtener F1, F2, etc
+    noecho();		// No imprimir los caracteres leidos
+    start_color();	// Permite manejar colores
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);	// Pair 1 -> Texto blanco fondo azul
+    init_pair(2, COLOR_YELLOW, COLOR_BLUE); // Pair 2 -> Texto amarillo fondo azul
     attron(COLOR_PAIR(1));	// Activa el color blanco para el texto y azul para el fondo Pair 1
     bkgd(COLOR_PAIR(1));    //  Todo el fondo de color azul
+    initIO(); // Inicializa los puertos de E/S
 
-    registro[15]=0;
     while(1)
     {
         showPorts();
@@ -144,16 +142,37 @@ int main()
         border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);    //Borde
 
         entrada=getch();
-
+        if(entrada=='0')
+        {
+            changePinPortA(0,HIGH);
+        }
         if(entrada=='1')
         {
-            interrupcion[0]=1;
-            cond=1;
+            changePinPortA(1,HIGH);
         }
         if(entrada=='2')
         {
-            interrupcion[1]=1;
-            cond=1;
+            changePinPortA(2,HIGH);
+        }
+        if(entrada=='3')
+        {
+            changePinPortA(3,HIGH);
+        }
+        if(entrada=='4')
+        {
+            changePinPortA(4,HIGH);
+        }
+        if(entrada=='5')
+        {
+            changePinPortA(5,HIGH);
+        }
+        if(entrada=='6')
+        {
+            changePinPortA(6,HIGH);
+        }
+        if(entrada=='7')
+        {
+            changePinPortA(7,HIGH);
         }
         if(entrada==' ')
         {
