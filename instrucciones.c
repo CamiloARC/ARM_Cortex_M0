@@ -14,6 +14,11 @@ void ADCS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
      flags_aritmetica(*Rd,Rn,Rm,bandera);	// Modifican banderas de carry y sobreflujo
 }
 
+void ADD(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+    *Rd=Rn+Rm;
+}
+
 void ADDS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
 {
     *Rd=Rn+Rm;
@@ -198,6 +203,11 @@ void SBCS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
     *Rd=Rn+~Rm+bandera->C;
     flags_global(*Rd,bandera);
     flags_aritmetica(*Rd,Rn,~Rm,bandera);
+}
+
+void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)
+{
+	*Rd=Rn+~Rm+1;
 }
 
 void SUBS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera)

@@ -1,6 +1,6 @@
 #include "nvic.h"
 
-void NVIC(bool *interrupcion,bool *FlagInt,uint32_t *registro,flags_t *bandera,uint8_t *SRAM)
+void NVIC(uint8_t *interrupcion,bool *FlagInt,uint32_t *registro,flags_t *bandera,uint8_t *SRAM)
 {
     int i;
     if(*FlagInt==1)
@@ -13,7 +13,7 @@ void NVIC(bool *interrupcion,bool *FlagInt,uint32_t *registro,flags_t *bandera,u
     }
     if(*FlagInt==0)
     {
-        for(i=0;i<32;i++)
+        for(i=0;i<16;i++)
         {
             if(interrupcion[i]==1)
             {

@@ -22,89 +22,21 @@ void PUSH(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list);
  * \param registers_list puntero del primer elemento del arreglo de unos y ceros, que contiene los registros a extraer
  * \return la funcion no retorna nada
  */
-
 void POP(uint32_t *registro,uint8_t *SRAM,uint8_t *registers_list);
-
-/** \brief funcion utlizada para la carga de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
 
 void LDR(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
 
-/** \brief funcion utlizada para la carga de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
-
 void LDRB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
-
-/** \brief funcion utlizada para la carga de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
 
 void LDRH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
 
-/** \brief funcion utlizada para la carga de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
 void LDRSB(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
-
-/** \brief funcion utlizada para la carga de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
 
 void LDRSH(uint32_t *Rt,uint32_t Rn,uint32_t Rm,uint8_t *SRAM);
 
-/** \brief funcion utlizada para el almacenamiento de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
 void STR(uint32_t Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
 
-/** \brief funcion utlizada para el almacenamiento de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
-
 void STRB(uint32_t Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
-
-/** \brief funcion utlizada para el almacenamiento de bytes de la RAM
- * \param Registro para almacenar la direccion
- * \param registro operando
- * \param Registro a operar
- * \param SRAM puntero del primer elemento del arreglo SRAM
- * \return la funcion no retorna nada
- */
 
 void STRH(uint32_t Rt, uint32_t Rn, uint32_t Rm, uint8_t *SRAM);
 

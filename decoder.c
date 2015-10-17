@@ -98,7 +98,9 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
             }
             if((*(registro+instruction.op2_value)+instruction.op3_value)>=0x40000000)
             {
-                IOAccess((*(registro+instruction.op2_value)+instruction.op3_value)&0xFF,registro+instruction.op1_value,Read);
+                uint8_t data;
+                IOAccess((*(registro+instruction.op2_value)+instruction.op3_value)&0xFF,&data,Read);
+                *(registro+instruction.op1_value)= (uint32_t)data;
             }
 
         }
@@ -115,7 +117,9 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
             }
             if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
             {
-                IOAccess((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))&0xFF,registro+instruction.op1_value,Read);
+                uint8_t data;
+                IOAccess((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))&0xFF,&data,Read);
+                *(registro+instruction.op1_value)=(uint32_t) data;
             }
         }
         registro[15]++;
@@ -260,7 +264,9 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
             }
             if((*(registro+instruction.op2_value)+instruction.op3_value)>=0x40000000)
             {
-                IOAccess((*(registro+instruction.op2_value)+instruction.op3_value)&0xFF,registro+instruction.op1_value,Write);
+                uint8_t data;
+                data=(uint8_t)(*(registro+instruction.op1_value));
+                IOAccess((*(registro+instruction.op2_value)+instruction.op3_value)&0xFF,&data,Write);
             }
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='R') && (instruction.op3_type=='R'))
@@ -276,7 +282,9 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
             }
             if((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))>=0x40000000)
             {
-                IOAccess((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))&0xFF,registro+instruction.op1_value,Write);
+                uint8_t data;
+                data=(uint8_t)(*(registro+instruction.op1_value));
+                IOAccess((*(registro+instruction.op2_value)+*(registro+instruction.op3_value))&0xFF,&data,Write);
             }
         }
         registro[15]++;
@@ -348,27 +356,27 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R'))
         {
-            ADDS(registro+instruction.op1_value,*(registro+instruction.op1_value),*(registro+instruction.op2_value), bandera);
+            ADD(registro+instruction.op1_value,*(registro+instruction.op1_value),*(registro+instruction.op2_value), bandera);
             *codificacion=(1<<14)+(1<<10)+(instruction.op2_value<<3)+((8&instruction.op1_value)<<4)+(7&instruction.op1_value);
         }
          if((instruction.op1_type=='R') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            ADDS(registro+instruction.op1_value,*(registro+13),instruction.op2_value, bandera);
+            ADD(registro+instruction.op1_value,*(registro+13),instruction.op2_value, bandera);
             *codificacion=(21<<11)+(instruction.op1_value<<8)+instruction.op3_value;
         }
         if((instruction.op1_type=='S') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            ADDS(registro+13,*(registro+13),instruction.op3_value, bandera);
+            ADD(registro+13,*(registro+13),instruction.op3_value, bandera);
             *codificacion=(11<<12)+instruction.op3_value;
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='S') && (instruction.op3_type=='R'))
         {
-            ADDS(registro+instruction.op1_value,*(registro+13),*(registro+instruction.op3_value),bandera);
+            ADD(registro+instruction.op1_value,*(registro+13),*(registro+instruction.op3_value),bandera);
             *codificacion=(1<<14)+(1<<10)+(13<<3)+((8&instruction.op1_value)<<4)+(7&instruction.op1_value);
         }
         if((instruction.op1_type=='S') && (instruction.op2_type=='R'))
         {
-            ADDS(registro+13,*(registro+13),*(registro+instruction.op2_value), bandera);
+            ADD(registro+13,*(registro+13),*(registro+instruction.op2_value), bandera);
             *codificacion=(1<<14)+(9<<7)+5+(instruction.op2_value<<3);
         }
         registro[15]++;
@@ -564,7 +572,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='S') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            SUBS(registro+13,*(registro+13),instruction.op3_value, bandera);
+            SUB(registro+13,*(registro+13),instruction.op3_value, bandera);
             *codificacion=(11<<12)+(1<<7)+instruction.op3_value;
         }
         registro[15]++;

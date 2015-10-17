@@ -30,7 +30,7 @@ extern uint8_t irq[16];
 int main()
 {
     // variables de desarrollo
-    bool interrupcion[32]; //arreglo de unos y ceros, el cual indica que interrupciones realizar
+    uint8_t data=0; // informacion de Pins de data
     bool FlagInt=0; // bandera que indica si hay o no una interrupcion
     uint16_t codificacion=0;
     bool cond=0;  // variable utilizada para realizar o no la funcion decodeInstruction()
@@ -43,7 +43,7 @@ int main()
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("prueba.txt",&read);    // Abrir el codigo
+    num_instructions = readFile("sustentacion.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -69,9 +69,9 @@ int main()
     {
         SRAM[i]=255;
     }
-    for(i=0;i<32;i++)
+    for(i=0;i<16;i++)
     {
-        interrupcion[i]=0;
+        irq[i]=0;
     }
     // terminan las condiciones iniciales
     initscr();		// Inicia modo curses
@@ -88,8 +88,8 @@ int main()
 
     while(1)
     {
-        showPorts();
-        NVIC(&interrupcion[0],&FlagInt,&registro[0],&bandera,&SRAM[0]);
+        showPorts();    //mostrar puertos
+        NVIC(&irq[0],&FlagInt,&registro[0],&bandera,&SRAM[0]);
         move(2,10);
         printw("Emulador ARM CORTEX M0");
         move(19,10);
@@ -120,9 +120,9 @@ int main()
         move(15,10);
         printw("\t\tR12:%0.8X",registro[12]);
         move(16,10);
-        printw("PC: %d",registro[15]*2);    //  Se multiplica por 2 debido a que la memoria del programa es de 8 bits
+        printw("PC: %0.2d",registro[15]*2);    //  Se multiplica por 2 debido a que la memoria del programa es de 8 bits
         move(17,10);
-        printw("LR: %d",registro[14]*2);
+        printw("LR: %0.2d ",registro[14]*2);
 
         move(4,10);
         printw("-> %s",instructions[registro[15]]); //  Muestra la funcion a ejecutar
@@ -142,37 +142,18 @@ int main()
         border(ACS_VLINE, ACS_VLINE,ACS_HLINE, ACS_HLINE,ACS_ULCORNER, ACS_URCORNER,ACS_LLCORNER, ACS_LRCORNER);    //Borde
 
         entrada=getch();
-        if(entrada=='0')
+        if(entrada=='i')
         {
-            changePinPortA(0,HIGH);
-        }
-        if(entrada=='1')
-        {
-            changePinPortA(1,HIGH);
-        }
-        if(entrada=='2')
-        {
-            changePinPortA(2,HIGH);
-        }
-        if(entrada=='3')
-        {
-            changePinPortA(3,HIGH);
-        }
-        if(entrada=='4')
-        {
-            changePinPortA(4,HIGH);
-        }
-        if(entrada=='5')
-        {
-            changePinPortA(5,HIGH);
-        }
-        if(entrada=='6')
-        {
-            changePinPortA(6,HIGH);
-        }
-        if(entrada=='7')
-        {
-            changePinPortA(7,HIGH);
+            IOAccess(12,&data,Read);
+            if(data&1)
+            {
+                changePinPortB(0,LOW);
+            }
+            else
+            {
+                changePinPortB(0,HIGH);
+            }
+            cond=1;
         }
         if(entrada==' ')
         {
@@ -237,6 +218,7 @@ int main()
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
             decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion,&instructions[0]);
+            cond=0;
         }
         if((registro[15]>num_instructions-1)&&(FlagInt==0)) // Sucede cuando se termina la ejecucion
         {
