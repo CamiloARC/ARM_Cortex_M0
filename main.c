@@ -19,6 +19,11 @@
  *  Para el desarrollo del sofware se implementaron 15 registros cada uno de 32 bits sin signo, 12 de ellos
  *  son utilizados para almacenamiento, uno para el program counter(PC) y otro para link register(LR), ademas se implemento una estructura para
  *  el manejo de las banderas de negativo, de cero, de acarreo y bandera de sobreflujo.
+ *
+ * Ademas cuenta con la emulacion de los distintos modulos existentes en el Micropocesador, como lo son el modulo NVIC  el cual se encarga
+ * de administrar las interrupciones en el sistema y el modulo para utilizar los puertos de entrada y de salida. La inclusion de estos modulos
+ * convierten el emulador en un Microcontralor dando la posiblidad de disponer de pines de entrada y salida para la conexion de sistemas externos
+ * que podrian ser utilizados para sensores y/o actuadores en la practica.
  */
 
 /** \file main.c
