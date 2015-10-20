@@ -36,7 +36,7 @@ typedef struct
 	uint32_t op1_value; /*!< Contiene el numero del registro a operar del primer parametro*/
     uint32_t op2_value; /*!< Contiene el numero del registro a operar del segundo parametro o un numero*/
 	uint32_t op3_value; /*!< Contiene el numero del registro a operar del tercer parametro o un numero*/
-    uint8_t registers_list[16];
+    uint8_t registers_list[16]; /*!< arreglo de ceros y unos*/
 }instruction_t;
 
 /** \fn void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *bandera);

@@ -356,27 +356,27 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='R') && (instruction.op2_type=='R'))
         {
-            ADD(registro+instruction.op1_value,*(registro+instruction.op1_value),*(registro+instruction.op2_value), bandera);
+            ADD(registro+instruction.op1_value,*(registro+instruction.op1_value),*(registro+instruction.op2_value));
             *codificacion=(1<<14)+(1<<10)+(instruction.op2_value<<3)+((8&instruction.op1_value)<<4)+(7&instruction.op1_value);
         }
          if((instruction.op1_type=='R') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            ADD(registro+instruction.op1_value,*(registro+13),instruction.op2_value, bandera);
+            ADD(registro+instruction.op1_value,*(registro+13),instruction.op2_value);
             *codificacion=(21<<11)+(instruction.op1_value<<8)+instruction.op3_value;
         }
         if((instruction.op1_type=='S') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            ADD(registro+13,*(registro+13),instruction.op3_value, bandera);
+            ADD(registro+13,*(registro+13),instruction.op3_value);
             *codificacion=(11<<12)+instruction.op3_value;
         }
         if((instruction.op1_type=='R') && (instruction.op2_type=='S') && (instruction.op3_type=='R'))
         {
-            ADD(registro+instruction.op1_value,*(registro+13),*(registro+instruction.op3_value),bandera);
+            ADD(registro+instruction.op1_value,*(registro+13),*(registro+instruction.op3_value));
             *codificacion=(1<<14)+(1<<10)+(13<<3)+((8&instruction.op1_value)<<4)+(7&instruction.op1_value);
         }
         if((instruction.op1_type=='S') && (instruction.op2_type=='R'))
         {
-            ADD(registro+13,*(registro+13),*(registro+instruction.op2_value), bandera);
+            ADD(registro+13,*(registro+13),*(registro+instruction.op2_value));
             *codificacion=(1<<14)+(9<<7)+5+(instruction.op2_value<<3);
         }
         registro[15]++;
@@ -572,7 +572,7 @@ void decodeInstruction(instruction_t instruction,uint32_t *registro,flags_t *ban
     {
         if((instruction.op1_type=='S') && (instruction.op2_type=='S') && (instruction.op3_type=='#'))
         {
-            SUB(registro+13,*(registro+13),instruction.op3_value, bandera);
+            SUB(registro+13,*(registro+13),instruction.op3_value);
             *codificacion=(11<<12)+(1<<7)+instruction.op3_value;
         }
         registro[15]++;

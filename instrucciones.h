@@ -28,7 +28,15 @@ typedef struct flags // estrutura flags_t
 */
 void ADCS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
-void ADD(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+/**
+* \brief funcion que realiza la suma entre Rn y Rm y lo guarda en *Rd
+* \param Rd puntero del registro Rd
+* \param Rn registro n
+* \param Rm registro m o numero
+* \return La funcion no tiene retorno
+*/
+
+void ADD(uint32_t *Rd,uint32_t Rn,uint32_t Rm);
 
 /**
 * \brief funcion que realiza la suma entre Rn y Rm y lo guarda en *Rd
@@ -215,7 +223,15 @@ void RSBS(uint32_t *Rd,uint32_t Rn,flags_t *bandera);
 */
 void SBCS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 
-void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
+/**
+* \brief funcion que realiza la resta entre Rn y Rm y lo guarda en *Rd
+* \param Rd puntero del registro Rd
+* \param Rn registro n
+* \param Rm registro m o numero
+* \return La funcion no tiene retorno
+*/
+
+void SUB(uint32_t *Rd,uint32_t Rn,uint32_t Rm);
 
 /**
 * \brief funcion que realiza la resta entre Rn y Rm y lo guarda en *Rd
@@ -235,4 +251,6 @@ void SUBS(uint32_t *Rd,uint32_t Rn,uint32_t Rm,flags_t *bandera);
 * \return La funcion no tiene retorno
 */
 void TST(uint32_t Rn,uint32_t Rm,flags_t *bandera);
+
+
 #endif

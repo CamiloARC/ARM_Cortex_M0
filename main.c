@@ -35,6 +35,7 @@ extern uint8_t irq[16];
 int main()
 {
     // variables de desarrollo
+    bool t=0;       //variable para saber pulsacion de t
     uint8_t data=0; // informacion de Pins de data
     bool FlagInt=0; // bandera que indica si hay o no una interrupcion
     uint16_t codificacion=0;
@@ -223,7 +224,17 @@ int main()
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
             decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion,&instructions[0]);
-            cond=0;
+
+            if(t)
+            {
+
+                cond=1;
+            }
+            else
+            {
+                cond=0;
+            }
+
         }
         if((registro[15]>num_instructions-1)&&(FlagInt==0)) // Sucede cuando se termina la ejecucion
         {
