@@ -49,7 +49,7 @@ int main()
     ins_t read;
 	char** instructions;
 	instruction_t instruction;
-    num_instructions = readFile("sustentacion.txt",&read);    // Abrir el codigo
+    num_instructions = readFile("codigo.txt",&read);    // Abrir el codigo
     if(num_instructions==-1)
 	 	return 0;
 	if(read.array==NULL)
@@ -150,14 +150,15 @@ int main()
         entrada=getch();
         if(entrada=='i')
         {
+            timeout(-1);
             IOAccess(12,&data,Read);
             if(data&1)
             {
-                changePinPortB(0,LOW);
+                changePinPortA(4,LOW);
             }
             else
             {
-                changePinPortB(0,HIGH);
+                changePinPortA(4,HIGH);
             }
             cond=1;
         }
@@ -208,11 +209,13 @@ int main()
         {
             timeout(-1);
             cond=0;
+            t=0;
         }
         if(entrada=='t')    //  Muestra instruccion cada segundo
         {
             timeout(1000);
             cond=1;
+            t=1;
         }
         if(entrada=='o')    //  Salir
         {
@@ -224,17 +227,14 @@ int main()
         {
             instruction=getInstruction(instructions[registro[15]]); // Instrucción en la posición PC
             decodeInstruction(instruction,&registro[0],&bandera,&SRAM[0],&codificacion,&instructions[0]);
-
             if(t)
             {
-
                 cond=1;
             }
             else
             {
                 cond=0;
             }
-
         }
         if((registro[15]>num_instructions-1)&&(FlagInt==0)) // Sucede cuando se termina la ejecucion
         {

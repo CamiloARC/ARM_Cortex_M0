@@ -1,7 +1,8 @@
 #include "nvic.h"
 
 /** \file nvic.c
- *  \brief Documento en donde se encuentran las funciones dedicadas a administrar las interrupciones ademas de cargar y guardar registros.
+ *  \brief Documento que contiene el desarrollo de las funciones encargadas de detectar las interrupciones y guardar registros especificos 
+ *  y banderas en la SRAM cuando empieza la interrupcion, y extraerlas de la SRAM cuando termina esta.
 */
 
 void NVIC(uint8_t *interrupcion,bool *FlagInt,uint32_t *registro,flags_t *bandera,uint8_t *SRAM)

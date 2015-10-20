@@ -1,8 +1,23 @@
 #include "io.h"
 
+/** \var PORTA
+ *  \brief Puerto A
+*/
 port_t PORTA;
+
+/** \var PORTB
+ *  \brief Puerto B
+*/
 port_t PORTB;
-uint8_t irq[16]; //
+
+/** \var irq[16]
+ *  \brief Arreglo que indica las interrupciones activas
+*/
+uint8_t irq[16]; 
+
+/** \file io.c
+ *  \brief Documento utilizado modificar el estado de PORT, Pins, DDR y PIN para administrar los puertos de entrada y salida 
+*/
 
 void initIO(void)
 {
@@ -24,7 +39,6 @@ void changePinPortA(uint8_t pin, uint8_t value)
 		irq[pin] = 1; //
 
 	PORTA.Pins = (PORTA.Pins & ~(1<<pin)) | value<<pin;
-	move(10,10);
 }
 
 void changePinPortB(uint8_t pin, uint8_t value)
